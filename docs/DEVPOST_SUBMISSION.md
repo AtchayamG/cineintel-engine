@@ -9,6 +9,11 @@ An autonomous film intelligence and research engine that implements official Par
 ## Selected Track
 **Parallel Track** ($7,500 1st Place)
 
+## Judge Links
+- **Live Application:** https://cineintel-engine.vercel.app/
+- **Public Repository:** https://github.com/AtchayamG/cineintel-engine
+- **Runtime Note:** The hosted evaluator is explicitly labeled demo mode. The live Parallel code path is implemented but remains blocked pending a Parallel credential.
+
 ## What It Does
 1. **Live-Mode Open-Web Market Research**: Uses Parallel Search (`parallel-web`) to extract trending tropes, cinematographic benchmarks, and narrative patterns.
 2. **Fact-Grounded Screenplay Architecture**: Ingests real-world excerpts and visual benchmarks via Gemini 2.5 Flash to ground creative screenplay generation.

@@ -9,6 +9,6 @@
 | **Judge-Friendly Web UI** | `backend/app/static/index.html`<br/>`backend/app/main.py` | **PASS** | Open `http://localhost:8002/` | Judge-friendly interactive studio with Premise Input, zero CDN dependencies, embedded favicon, demonstrating deterministic Parallel-shaped research fixtures and a local Gemini-shaped synthesis fixture. |
 | **Explicit Live / Demo Mode** | `backend/app/config.py`<br/>`backend/app/services/parallel_service.py` | **PASS** | `pytest tests/test_parallel_intel.py` | Clear mode badge, honest source attribution, and strict error handling without silent fallback. |
 | **Preserve Source Evidence** | `backend/app/services/parallel_service.py` | **PASS** | File inspect | Preserves title, URL/fixture ID, excerpts, and retrieval status. |
-| **Open Source License** | `LICENSE` | **PASS** | File inspect | Apache 2.0 Open Source License. |
+| **Open Source License** | `LICENSE` | **PASS** | File inspect | Standard MIT Open Source License. |
 | **Environment Template** | `.env.example` | **PASS** | File inspect | Contains parameter names and explanations without secrets. |
 | **Health / Readiness Endpoint** | `backend/app/main.py` (`/api/v1/health`) | **PASS** | `GET /api/v1/health` | Exposes provider configuration state and model configuration. |

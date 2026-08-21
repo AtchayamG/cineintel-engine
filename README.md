@@ -4,7 +4,7 @@
 ### Real-Time Web Grounding, Film Trend Research & Autonomous Script Doctor
 **Built for the Parallel Track — Google Cloud "Agentic Cinema: The Blockbuster Hackathon"**
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Parallel Search](https://img.shields.io/badge/Parallel%20Web-Search%20API-00F0FF)](https://parallel.ai)
 [![Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-4285F4?logo=google&logoColor=white)](https://cloud.google.com/vertex-ai)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
@@ -60,7 +60,10 @@ python -m pytest -v
 
 ## ☁️ Vercel Deployment
 
-A `vercel.json` configuration is included for easy public deployment of the FastAPI backend. Public deployments default to `demo` mode using honest deterministic fixtures.
+**Live judge demo:** https://cineintel-engine.vercel.app/  
+**Public source:** https://github.com/AtchayamG/cineintel-engine
+
+A `vercel.json` configuration is included for reproducible public deployment of the FastAPI backend. Public deployments default to `demo` mode using honest deterministic fixtures.
 
 When deploying to Vercel, ensure you set the **Root Directory** in your Vercel project settings to `backend`.
 
@@ -76,4 +79,4 @@ vercel
 ---
 
 ## 📄 License
-Licensed under the **[Apache License 2.0](LICENSE)**.
+Licensed under the **[MIT License](LICENSE)**.

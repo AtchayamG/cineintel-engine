@@ -16,7 +16,7 @@
 - **Project Title:** `CineIntel Engine: Real-Time Web Grounding, Film Trend Research & Autonomous Script Doctor`
 - **Elevator Pitch:** `An autonomous film intelligence and research engine that implements official Parallel Search and Gemini integration paths to generate fact-grounded screenplays with explicit uncertainty critiques. The default public evaluator uses deterministic fixtures, the independent Gemini service smoke is proven PASS, and live Parallel execution remains BLOCKED.`
 - **Partner Track:** `Parallel Track`
-- **License:** `Apache 2.0` (Included at root)
+- **License:** `MIT` (Included at root)
 
 ---
 
@@ -46,7 +46,7 @@ Track3_Parallel_CineIntel_Engine/
 │   ├── ARCHITECTURE.md                    # Architecture whitepaper
 │   ├── SUBMISSION_EVIDENCE.md             # Evidence matrix & verification
 │   └── VIDEO_DEMO_SCRIPT.md               # 3-minute video demo script
-├── LICENSE                                # Apache 2.0
+├── LICENSE                                # MIT
 └── README.md                              # Main documentation
 ```
 
