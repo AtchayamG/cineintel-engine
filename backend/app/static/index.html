@@ -322,6 +322,26 @@
   </footer>
 
   <script>
+    function escapeHTML(str) {
+      if (str === null || str === undefined) return '';
+      const s = typeof str === 'string' ? str : JSON.stringify(str);
+      return s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+    
+    function isValidHttpUrl(string) {
+      try {
+        const url = new URL(string);
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch (_) {
+        return false;
+      }
+    }
+
     let currentMode = 'demo';
     async function checkHealth() {
       try {
@@ -369,23 +389,40 @@
         const sources = data.sources || [];
 
         if (sources.length === 0) {
-          sourcesList.innerHTML = `<div class="source-card mono" style="color: #ef4444;">No research sources retrieved. (Status: ${data.status || 'unknown'})</div>`;
+          sourcesList.innerHTML = `<div class="source-card mono" style="color: #ef4444;">No research sources retrieved. (Status: ${escapeHTML(data.status) || 'unknown'})</div>`;
         } else {
           sourcesList.innerHTML = sources.map(s => {
-            const isFixture = !s.url || s.url.startsWith('fixture:');
-            const urlDisplay = isFixture 
-              ? `<span class="fixture-tag mono">${s.url}</span>` 
-              : `<a href="${s.url}" target="_blank" class="source-title">${s.title}</a><div style="font-size: 0.65rem; color: #64748b;">${s.url}</div>`;
+            const isFixture = !s.url || String(s.url).startsWith('fixture:');
+            let urlDisplay = '';
+            let titleDisplay = '';
             
-            const titleDisplay = isFixture ? `<div class="source-title">${s.title}</div>` : '';
+            const safeTitle = escapeHTML(s.title);
+            const safeUrl = escapeHTML(s.url);
+            
+            if (isFixture) {
+              urlDisplay = `<span class="fixture-tag mono">${safeUrl}</span>`;
+              titleDisplay = `<div class="source-title">${safeTitle}</div>`;
+            } else {
+              if (isValidHttpUrl(s.url)) {
+                urlDisplay = `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="source-title">${safeTitle}</a><div style="font-size: 0.65rem; color: #64748b;">${safeUrl}</div>`;
+                titleDisplay = '';
+              } else {
+                urlDisplay = `<span class="fixture-tag mono">Invalid URL</span>`;
+                titleDisplay = `<div class="source-title">${safeTitle}</div>`;
+              }
+            }
+
+            const snippetText = s.snippet ? s.snippet : (s.excerpts ? s.excerpts.join(' ') : '');
+            const safeSnippet = escapeHTML(snippetText);
+            const safeStatus = escapeHTML(s.retrieval_status || 'OK');
 
             return `
               <div class="source-card mono">
                 ${titleDisplay}
                 ${urlDisplay}
-                <p class="source-snippet">${s.snippet || (s.excerpts ? s.excerpts.join(' ') : '')}</p>
+                <p class="source-snippet">${safeSnippet}</p>
                 <div style="font-size: 0.65rem; color: #475569; display: flex; justify-content: space-between;">
-                  <span>Status: ${s.retrieval_status || 'OK'}</span>
+                  <span>Status: ${safeStatus}</span>
                 </div>
               </div>
             `;
@@ -398,8 +435,8 @@
           synBox.innerHTML = `
             <div class="synthesis-card mono" style="border-color: #ef4444;">
               <span style="color: #ef4444; font-weight: bold;">Error / Unavailable:</span>
-              <p style="color: #f87171;">${data.error || 'Failed to complete synthesis.'}</p>
-              <div style="font-size: 0.65rem; color: #64748b;">Mode: ${data.mode || 'live_error'}</div>
+              <p style="color: #f87171;">${escapeHTML(data.error || 'Failed to complete synthesis.')}</p>
+              <div style="font-size: 0.65rem; color: #64748b;">Mode: ${escapeHTML(data.mode || 'live_error')}</div>
             </div>
           `;
           return;
@@ -407,33 +444,41 @@
 
         const syn = data.gemini_synthesis;
         // Ensure concept_summary is string and not object/dict representation
-        const conceptSummary = typeof syn.concept_summary === 'string' ? syn.concept_summary : JSON.stringify(syn.concept_summary);
+        const rawConceptSummary = typeof syn.concept_summary === 'string' ? syn.concept_summary : JSON.stringify(syn.concept_summary);
+        
+        const safeTitle = escapeHTML(syn.grounded_title || 'Untitled Concept');
+        const safeSummary = escapeHTML(rawConceptSummary);
+        const safeCritique = escapeHTML(syn.viability_critique || '');
+        const safeUncertainty = escapeHTML(syn.uncertainty_rating || 'Moderate');
+        const safeLatency = escapeHTML(String(data.measured_latency_ms));
+        
+        const safeBeats = (syn.recommended_scene_beats || []).map(b => `<li>${escapeHTML(b)}</li>`).join('');
 
         synBox.innerHTML = `
           <div class="synthesis-card mono">
             <div>
               <span style="font-size: 0.65rem; color: var(--cyan-accent); font-weight: bold; text-transform: uppercase;">Grounded Concept Title:</span>
-              <h3 style="font-size: 1.1rem; font-weight: bold; color: #fff; margin-top: 0.2rem;">${syn.grounded_title || 'Untitled Concept'}</h3>
-              <p style="color: #cbd5e1; font-size: 0.75rem; margin-top: 0.35rem; line-height: 1.4;">${conceptSummary}</p>
+              <h3 style="font-size: 1.1rem; font-weight: bold; color: #fff; margin-top: 0.2rem;">${safeTitle}</h3>
+              <p style="color: #cbd5e1; font-size: 0.75rem; margin-top: 0.35rem; line-height: 1.4;">${safeSummary}</p>
             </div>
 
             <div class="critique-box">
               <span style="font-size: 0.7rem; color: #f59e0b; font-weight: bold; display: block; margin-bottom: 0.25rem;">Market Evidence & Uncertainty Critique:</span>
-              <p style="color: #cbd5e1; font-size: 0.7rem; line-height: 1.4;">${syn.viability_critique || ''}</p>
+              <p style="color: #cbd5e1; font-size: 0.7rem; line-height: 1.4;">${safeCritique}</p>
               <div style="font-size: 0.65rem; color: #94a3b8; margin-top: 0.5rem;">
-                Uncertainty Rating: <strong style="color: var(--cyan-accent);">${syn.uncertainty_rating || 'Moderate'}</strong>
+                Uncertainty Rating: <strong style="color: var(--cyan-accent);">${safeUncertainty}</strong>
               </div>
             </div>
 
             <div>
               <span style="font-size: 0.7rem; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 0.35rem;">Recommended Scene Beats:</span>
               <ul class="beats-list">
-                ${(syn.recommended_scene_beats || []).map(b => `<li>${b}</li>`).join('')}
+                ${safeBeats}
               </ul>
             </div>
 
             <div style="padding-top: 0.5rem; border-top: 1px solid #1e293b; font-size: 0.65rem; color: #64748b; display: flex; justify-content: space-between;">
-              <span>Measured Latency: ${data.measured_latency_ms} ms</span>
+              <span>Measured Latency: ${safeLatency} ms</span>
               <span>Gemini 2.5 Flash + Parallel Search</span>
             </div>
           </div>

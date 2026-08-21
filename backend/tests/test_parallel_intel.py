@@ -189,3 +189,31 @@ async def test_primary_ui_workflow_endpoints():
         # GET /api/v1/intel/casting/affinity
         resp_casting = await ac.get("/api/v1/intel/casting/affinity")
         assert resp_casting.status_code == 200
+
+@pytest.mark.asyncio
+async def test_xss_prevention_static():
+    """
+    Verify that index.html employs strict XSS prevention.
+    """
+    import os
+    index_path = os.path.join(os.path.dirname(__file__), '..', 'app', 'static', 'index.html')
+    with open(index_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # Verify helpers exist
+    assert 'function escapeHTML' in content
+    assert 'function isValidHttpUrl' in content
+    assert "url.protocol === 'http:'" in content
+    assert "url.protocol === 'https:'" in content
+
+    # Verify noopener noreferrer target=_blank
+    assert 'rel="noopener noreferrer"' in content
+    assert 'target="_blank"' in content
+
+    # Verify that dangerous properties are not interpolated directly
+    assert '${safeTitle}' in content
+    assert '${safeUrl}' in content
+    assert '${safeSnippet}' in content
+    
+    assert '<a href="${s.url}"' not in content
+    assert '>${s.title}<' not in content

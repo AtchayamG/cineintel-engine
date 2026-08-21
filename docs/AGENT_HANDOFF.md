@@ -8,13 +8,13 @@
 ---
 
 ## 1. Executive Summary & Purpose
-**CineIntel Engine** is an autonomous film research and screenplay grounding platform powered by the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 2.5 Flash**. Before production greenlights occur, autonomous agents crawl open-web narrative benchmarks, visual reference tropes, and character archetypes to ground movie creation in evidence and explicit uncertainty bounds.
+**CineIntel Engine** is an autonomous film research and screenplay grounding platform powered by the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 2.5 Flash**. Before production greenlights occur, autonomous agents crawl open-web narrative benchmarks, visual reference tropes, and character archetypes to ground movie creation in evidence and explicit uncertainty bounds (crawling open-web datasets is a live-mode capability, with live proof blocked until an API key is supplied).
 
 ---
 
 ## 2. Devpost Submission Fields (Copy-Paste Ready)
 - **Project Title:** `CineIntel Engine: Real-Time Web Grounding, Film Trend Research & Autonomous Script Doctor`
-- **Elevator Pitch:** `An autonomous film intelligence and research engine powered by the Parallel Search API/SDK and Gemini 2.5 Flash that crawls open-web datasets and visual reference benchmarks to generate fact-grounded screenplays with explicit uncertainty critiques.`
+- **Elevator Pitch:** `An autonomous film intelligence and research engine powered by the Parallel Search API/SDK and Gemini 2.5 Flash that crawls open-web datasets (live-mode capability) and visual reference benchmarks to generate fact-grounded screenplays with explicit uncertainty critiques. Live proof is blocked until an API key is supplied.`
 - **Partner Track:** `Parallel Track`
 - **License:** `Apache 2.0` (Included at root)
 
