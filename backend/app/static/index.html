@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineIntel Engine — Parallel MCP & Gemini 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Space Grotesk', sans-serif; background-color: #080d1a; color: #f1f5f9; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass { background: rgba(13, 22, 40, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(0, 240, 255, 0.18); }
+    .glow-cyan { box-shadow: 0 0 25px rgba(0, 240, 255, 0.2); }
+  </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8 flex flex-col justify-between">
+  <div class="max-w-6xl w-full mx-auto space-y-6">
+    <!-- Header -->
+    <header class="glass p-6 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-cyan-400 text-black flex items-center justify-center font-bold text-xl">🌐</div>
+          <h1 class="text-2xl font-bold tracking-tight text-white">CineIntel Engine</h1>
+          <span class="mono text-xs px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold">Parallel Track</span>
+        </div>
+        <p class="text-xs text-slate-400">Open-Web Grounding, Viral Trope Forecasting & Fact-Grounded Script Doctor</p>
+      </div>
+      <div class="flex items-center gap-3 text-xs mono">
+        <span id="mode-badge" class="px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300">MODE: DEMO FIXTURES</span>
+        <a href="/docs" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">API Docs (Swagger)</a>
+      </div>
+    </header>
+
+    <!-- Main 2-Column Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Left: Filmmaker Creative Input & Parallel Search -->
+      <div class="glass p-6 rounded-2xl space-y-5">
+        <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-cyan-400">1. Film Premise & Parallel Web Search</h2>
+          <span class="mono text-[11px] text-slate-400">mcp-parallel-web</span>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="text-xs mono text-slate-300 block mb-1">Film Genre & Tone:</label>
+            <input type="text" id="genre-input" value="Sci-Fi / Cyberpunk Noir" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs mono text-white focus:outline-none focus:border-cyan-400">
+          </div>
+
+          <div>
+            <label class="text-xs mono text-slate-300 block mb-1">Creative Film Premise:</label>
+            <textarea id="premise-input" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs mono text-white focus:outline-none focus:border-cyan-400">A rogue synthetic consciousness investigator uncovers a glitch in the city atmospheric control grid.</textarea>
+          </div>
+
+          <button id="run-btn" onclick="runGroundedResearch()" class="w-full py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-black font-bold text-xs mono tracking-wider transition-all glow-cyan">
+            ⚡ Run Parallel Search + Gemini 2.0 Grounded Synthesis
+          </button>
+        </div>
+
+        <!-- Retrieved Sources Box -->
+        <div id="sources-box" class="space-y-3 pt-2">
+          <span class="text-xs mono text-slate-400 font-semibold block">Parallel Search Source Evidence:</span>
+          <div id="sources-list" class="space-y-2">
+            <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center text-slate-400 text-xs mono">
+              Click the button above to crawl reference datasets via Parallel Web Systems.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Gemini 2.0 Fact-Grounded Synthesis -->
+      <div class="glass p-6 rounded-2xl space-y-5">
+        <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-cyan-400">2. Gemini 2.0 Grounded Synthesis & Script Beats</h2>
+          <span class="mono text-[11px] text-slate-400">Gemini 2.0 Flash</span>
+        </div>
+
+        <div id="synthesis-box" class="space-y-4">
+          <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-center text-slate-400 text-xs mono">
+            Grounded screenplay structure and uncertainty critique will appear here.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center py-6 text-xs mono text-slate-500">
+    CineIntel Engine • Google Cloud Agentic Cinema Hackathon • Parallel Partner Track
+  </footer>
+
+  <script>
+    async function runGroundedResearch() {
+      const btn = document.getElementById('run-btn');
+      btn.innerText = 'Searching Parallel Web & Synthesizing...';
+      btn.disabled = true;
+
+      const genre = document.getElementById('genre-input').value;
+      const premise = document.getElementById('premise-input').value;
+
+      try {
+        const res = await fetch('/api/v1/intel/script/grounded', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ premise, genre })
+        });
+        const data = await res.json();
+
+        // 1. Render Sources
+        const sourcesList = document.getElementById('sources-list');
+        sourcesList.innerHTML = (data.sources || []).map(s => `
+          <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs mono space-y-1">
+            <a href="${s.url}" target="_blank" class="font-bold text-cyan-300 hover:underline block truncate">${s.title}</a>
+            <p class="text-slate-400 text-[11px] line-clamp-2">${s.snippet}</p>
+            <span class="text-[10px] text-slate-500 block truncate">${s.url}</span>
+          </div>
+        `).join('');
+
+        // 2. Render Gemini Synthesis
+        const syn = data.gemini_synthesis || {};
+        const synBox = document.getElementById('synthesis-box');
+        synBox.innerHTML = `
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3 mono text-xs">
+            <div>
+              <span class="text-[10px] text-cyan-400 block font-bold uppercase tracking-wider">Grounded Concept Title:</span>
+              <h3 class="text-base font-bold text-white">${syn.grounded_title || 'Neon Horizons: Quantum Resonance'}</h3>
+              <p class="text-slate-300 text-xs mt-1">${syn.concept_summary || ''}</p>
+            </div>
+
+            <div class="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
+              <span class="text-[11px] text-yellow-400 font-bold block">Market Viability & Uncertainty Critique:</span>
+              <p class="text-slate-300 text-[11px]">${syn.viability_critique || ''}</p>
+              <span class="text-[10px] text-slate-400 block mt-1">Uncertainty Rating: <b class="text-cyan-300">${syn.uncertainty_rating || 'Moderate'}</b></span>
+            </div>
+
+            <div class="space-y-1 pt-1">
+              <span class="text-[11px] text-slate-400 font-semibold block">Recommended Scene Beats:</span>
+              <ul class="list-disc pl-4 space-y-1 text-slate-300 text-[11px]">
+                ${(syn.recommended_scene_beats || []).map(b => `<li>${b}</li>`).join('')}
+              </ul>
+            </div>
+
+            <div class="pt-2 border-t border-slate-800 text-[10px] text-slate-500 flex justify-between">
+              <span>Measured Latency: ${data.measured_latency_ms} ms</span>
+              <span>Gemini 2.0 Flash + Parallel MCP</span>
+            </div>
+          </div>
+        `;
+      } catch(e) {
+        console.error(e);
+      } finally {
+        btn.innerText = '⚡ Run Parallel Search + Gemini 2.0 Grounded Synthesis';
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
