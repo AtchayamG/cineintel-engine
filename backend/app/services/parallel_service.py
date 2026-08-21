@@ -2,7 +2,13 @@ import logging
 import time
 import httpx
 from typing import Dict, Any, List
-from app.config import settings
+from app.config import (
+    settings,
+    normalize_parallel_api_origin,
+    get_parallel_sdk_base_url,
+    get_parallel_rest_search_url,
+    get_parallel_rest_extract_url
+)
 
 logger = logging.getLogger("cineintel.parallel")
 
@@ -14,8 +20,19 @@ class ParallelService:
     """
     def __init__(self):
         self.api_key = settings.PARALLEL_API_KEY
-        self.base_url = settings.PARALLEL_BASE_URL.rstrip('/')
         self.runtime_mode = settings.RUNTIME_MODE
+
+    @property
+    def sdk_base_url(self) -> str:
+        return settings.parallel_sdk_base_url
+
+    @property
+    def rest_search_url(self) -> str:
+        return settings.parallel_rest_search_url
+
+    @property
+    def rest_extract_url(self) -> str:
+        return settings.parallel_rest_extract_url
 
     async def search_open_web(self, query: str, max_results: int = 4) -> Dict[str, Any]:
         start = time.time()
@@ -38,12 +55,12 @@ class ParallelService:
 
             try:
                 from parallel import AsyncParallel
-                client = AsyncParallel(api_key=self.api_key, base_url=self.base_url)
+                client = AsyncParallel(api_key=self.api_key, base_url=self.sdk_base_url)
                 search_res = await client.search(objective=query, search_queries=[query])
                 if hasattr(search_res, "results") and search_res.results is not None:
                     raw_results = search_res.results
             except Exception as sdk_err:
-                logger.warning(f"Parallel SDK call failed: {sdk_err}. Trying direct HTTP request.")
+                logger.warning(f"Parallel SDK call failed ({sdk_err}). Trying direct HTTP request to {self.rest_search_url}.")
                 try:
                     headers = {
                         "x-api-key": self.api_key,
@@ -55,7 +72,7 @@ class ParallelService:
                     }
                     async with httpx.AsyncClient(timeout=10.0) as http_client:
                         resp = await http_client.post(
-                            f"{self.base_url}/search",
+                            self.rest_search_url,
                             json=payload,
                             headers=headers
                         )
@@ -164,7 +181,7 @@ class ParallelService:
                 }
             try:
                 from parallel import AsyncParallel
-                client = AsyncParallel(api_key=self.api_key, base_url=self.base_url)
+                client = AsyncParallel(api_key=self.api_key, base_url=self.sdk_base_url)
                 res = await client.extract(urls=[url])
                 return {
                     "status": "success",
@@ -175,12 +192,39 @@ class ParallelService:
                     "latency_ms": round((time.time() - start) * 1000, 2)
                 }
             except Exception as e:
-                return {
-                    "status": "error",
-                    "mode": "live_error",
-                    "error": f"Parallel Extract error: {str(e)}",
-                    "url": url
-                }
+                try:
+                    headers = {
+                        "x-api-key": self.api_key,
+                        "Content-Type": "application/json"
+                    }
+                    async with httpx.AsyncClient(timeout=10.0) as http_client:
+                        resp = await http_client.post(
+                            self.rest_extract_url,
+                            json={"urls": [url]},
+                            headers=headers
+                        )
+                        if resp.status_code == 200:
+                            return {
+                                "status": "success",
+                                "mode": "live",
+                                "evidence_source": "Parallel Extract Engine (Live Direct REST Endpoint)",
+                                "url": url,
+                                "extract_data": resp.json(),
+                                "latency_ms": round((time.time() - start) * 1000, 2)
+                            }
+                        return {
+                            "status": "error",
+                            "mode": "live_error",
+                            "error": f"Parallel Extract HTTP {resp.status_code}: {resp.text}",
+                            "url": url
+                        }
+                except Exception as http_err:
+                    return {
+                        "status": "error",
+                        "mode": "live_error",
+                        "error": f"Parallel Extract error: {str(e)} | HTTP error: {str(http_err)}",
+                        "url": url
+                    }
 
         return {
             "status": "success",
@@ -193,3 +237,4 @@ class ParallelService:
         }
 
 parallel_service = ParallelService()
+

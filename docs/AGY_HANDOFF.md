@@ -11,7 +11,8 @@ Key accomplishments:
 5. **Removed Unsupported Hype Claims**: Eliminated the 8.8/10 market score, "high positive audience interest", ROI/performance guarantees, and viral forecasting certainty. Replaced with evidence summaries, uncertainty factors, and character-driven development recommendations.
 6. **Gemini 2.5 Flash Migration**: Updated default model configuration from deprecated `gemini-2.0-flash` to stable `gemini-2.5-flash`.
 7. **Clean Local UI**: Replaced external Tailwind CDN with repository-local, production-safe CSS and added an embedded favicon endpoint to prevent console errors.
-8. **Automated Test Suite**: Built 8 comprehensive pytest suites covering SDK construction, normalization, demo fixture labeling, live mode error handling, route regression, health readiness, and primary UI workflows.
+8. **Parallel SDK Base URL & Path Endpoint Normalization**: Added URL normalization helpers in `config.py` and `parallel_service.py` (`normalize_parallel_api_origin`, `get_parallel_sdk_base_url`, `get_parallel_rest_search_url`, `get_parallel_rest_extract_url`) ensuring `AsyncParallel` receives base origin (`https://api.parallel.ai`) without trailing `/v1`, completely eliminating path duplication errors (`/v1/v1/search`).
+9. **Automated Test Suite**: Built 10 comprehensive pytest suites covering SDK construction, path normalization contract, demo fixture labeling, live mode error handling, route regression, health readiness, and primary UI workflows.
 
 ---
 
@@ -20,8 +21,8 @@ Key accomplishments:
 | File Path | Description of Changes |
 | :--- | :--- |
 | `backend/requirements.txt` | Added `parallel-web>=0.5.0` dependency. |
-| `backend/app/config.py` | Updated `GEMINI_MODEL` default to `gemini-2.5-flash` and `ENABLE_MOCK_FALLBACK` default to `False`. |
-| `backend/app/services/parallel_service.py` | Implemented official Parallel Search API/SDK integration (`AsyncParallel`), normalized `excerpts`, strict live mode error return, and non-clickable demo fixtures. |
+| `backend/app/config.py` | Added Parallel API origin normalization helpers (`parallel_sdk_base_url`, `parallel_rest_search_url`, `parallel_rest_extract_url`), updated `GEMINI_MODEL` default to `gemini-2.5-flash` and `ENABLE_MOCK_FALLBACK` default to `False`. |
+| `backend/app/services/parallel_service.py` | Implemented official Parallel Search API/SDK integration (`AsyncParallel`), normalized `sdk_base_url` to prevent `/v1/v1` duplication, normalized `excerpts`, strict live mode error return, extract REST fallback, and non-clickable demo fixtures. |
 | `backend/app/services/gemini_service.py` | Updated to `gemini-2.5-flash`, enforced live mode error return, handled string genre, and removed hype claims. |
 | `backend/app/mcp/parallel_mcp_server.py` | Updated tool descriptions and model references to Gemini 2.5 Flash. |
 | `backend/app/agents/grounded_writer_agent.py` | Added type safety, error status passthrough, and Gemini 2.5 references. |
@@ -30,7 +31,7 @@ Key accomplishments:
 | `backend/app/routes/intel_routes.py` | Fixed bug by passing `req.genre` string instead of `trends` dict to `generate_grounded_script`. |
 | `backend/app/main.py` | Added embedded SVG favicon endpoint `/favicon.ico` and updated health readiness endpoint. |
 | `backend/app/static/index.html` | Replaced Tailwind CDN with repository-local CSS, added embedded favicon link, safe fixture URL rendering, and Gemini 2.5 labels. |
-| `backend/tests/test_parallel_intel.py` | Expanded test suite to 8 tests covering SDK, normalization, live errors, demo fixtures, route regression, health, and UI workflow. |
+| `backend/tests/test_parallel_intel.py` | Expanded test suite to 10 tests covering SDK path contract, URL normalization, live errors, demo fixtures, route regression, health, and UI workflow. |
 | `.env.example` | Updated default model to `gemini-2.5-flash`. |
 | `README.md` | Updated architecture, badges, SDK specs, and Gemini 2.5 model labels. |
 | `docs/AGENT_HANDOFF.md` | Updated handoff details, architecture map, and verification steps. |
@@ -49,7 +50,8 @@ Key accomplishments:
    cd backend
    python -m pytest -v
    ```
-   *Result*: `8 passed in 0.47s`
+   *Result*: `10 passed in 0.83s`
+
 
 2. **Secret Leak Audit**:
    ```bash
