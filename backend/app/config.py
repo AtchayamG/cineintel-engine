@@ -17,14 +17,14 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     GOOGLE_CLOUD_PROJECT: str = os.getenv("GOOGLE_CLOUD_PROJECT", "")
     GOOGLE_CLOUD_LOCATION: str = os.getenv("GOOGLE_CLOUD_LOCATION", "us-central1")
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
     
     # Server
     PORT: int = int(os.getenv("PORT", 8002))
     HOST: str = os.getenv("HOST", "0.0.0.0")
     CORS_ORIGINS: List[str] = ["*"]
     DEBUG: bool = os.getenv("DEBUG", "false").lower() in ("true", "1", "yes")
-    ENABLE_MOCK_FALLBACK: bool = os.getenv("ENABLE_MOCK_FALLBACK", "true").lower() in ("true", "1", "yes")
+    ENABLE_MOCK_FALLBACK: bool = os.getenv("ENABLE_MOCK_FALLBACK", "false").lower() in ("true", "1", "yes")
     
     # Parallel Web API
     PARALLEL_API_KEY: str = os.getenv("PARALLEL_API_KEY", "")

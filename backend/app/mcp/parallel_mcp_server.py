@@ -6,11 +6,10 @@ logger = logging.getLogger("cineintel.mcp")
 
 class ParallelMCPServer:
     """
-    Model Context Protocol (MCP) Server for Parallel Web Systems integration.
-    Exposes 3 core tools to Gemini 2.0 agents:
-      1. `parallel_search_web`: Live search for film trends & tropes
+    Model Context Protocol (MCP) Server adapter for Parallel Web Systems integration.
+    Exposes core tools to Gemini 2.5 agents:
+      1. `parallel_search_web`: Live search for film trends & tropes via Parallel Search API
       2. `parallel_extract_url`: Clean markdown/entity extraction from URLs
-      3. `parallel_deep_research_task`: Multi-hop market viability research
     """
     def __init__(self):
         self.server_name = "mcp-parallel-web"
@@ -19,7 +18,7 @@ class ParallelMCPServer:
         return [
             {
                 "name": "parallel_search_web",
-                "description": "Searches the live open web for film industry trends, cinematographic reference styles, and box office comps.",
+                "description": "Searches the live open web for film industry trends, cinematographic reference styles, and box office comps via Parallel Search API.",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -31,7 +30,7 @@ class ParallelMCPServer:
             },
             {
                 "name": "parallel_extract_url",
-                "description": "Extracts clean narrative tokens, entities, and summaries from a webpage URL.",
+                "description": "Extracts clean narrative tokens, entities, and summaries from a webpage URL via Parallel Extract API.",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -47,7 +46,7 @@ class ParallelMCPServer:
         if tool_name == "parallel_search_web":
             return await parallel_service.search_open_web(
                 arguments.get("query", "Cinema trends"),
-                arguments.get("max_results", 5)
+                arguments.get("max_results", 4)
             )
         elif tool_name == "parallel_extract_url":
             return await parallel_service.extract_url(arguments.get("url", ""))

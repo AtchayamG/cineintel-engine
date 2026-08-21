@@ -3,91 +3,342 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineIntel Engine — Parallel MCP & Gemini 2.0</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <title>CineIntel Engine — Parallel Search & Gemini 2.5</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico">
   <style>
-    body { font-family: 'Space Grotesk', sans-serif; background-color: #080d1a; color: #f1f5f9; }
-    .mono { font-family: 'JetBrains Mono', monospace; }
-    .glass { background: rgba(13, 22, 40, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(0, 240, 255, 0.18); }
-    .glow-cyan { box-shadow: 0 0 25px rgba(0, 240, 255, 0.2); }
+    :root {
+      --bg-color: #080d1a;
+      --card-bg: rgba(13, 22, 40, 0.9);
+      --border-color: rgba(0, 240, 255, 0.18);
+      --cyan-accent: #00f0ff;
+      --cyan-dim: rgba(0, 240, 255, 0.1);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --accent-yellow: #f59e0b;
+      --input-bg: #0f172a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .glass {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+    }
+
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+    header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-box {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.75rem;
+      background-color: var(--cyan-accent);
+      color: #080d1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+
+    h1 { font-size: 1.5rem; font-weight: 700; color: #fff; }
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      background: var(--cyan-dim);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--cyan-accent);
+      font-weight: 600;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    .mode-badge {
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.5rem;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--accent-yellow);
+    }
+
+    .btn-link {
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.5rem;
+      background: #1e293b;
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-link:hover { background: #334155; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 992px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+
+    .card-header {
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--cyan-accent);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      color: #cbd5e1;
+      margin-bottom: 0.35rem;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid #334155;
+      border-radius: 0.75rem;
+      padding: 0.6rem 0.8rem;
+      font-size: 0.75rem;
+      color: #fff;
+      outline: none;
+    }
+    input[type="text"]:focus, textarea:focus {
+      border-color: var(--cyan-accent);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+      background: var(--cyan-accent);
+      color: #080d1a;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .sources-box {
+      margin-top: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .source-card {
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+      background: #040814;
+      border: 1px solid #1e293b;
+      font-size: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .source-title { font-weight: 700; color: #67e8f9; text-decoration: none; }
+    .source-title:hover { text-decoration: underline; }
+    .source-snippet { color: #94a3b8; font-size: 0.7rem; line-height: 1.4; }
+    .fixture-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--cyan-accent);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+    }
+
+    .synthesis-card {
+      padding: 1rem;
+      border-radius: 0.75rem;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      font-size: 0.75rem;
+    }
+
+    .critique-box {
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      background: #040814;
+      border: 1px solid #1e293b;
+    }
+
+    ul.beats-list {
+      list-style-type: disc;
+      padding-left: 1.25rem;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+    }
   </style>
 </head>
-<body class="min-h-screen p-4 sm:p-8 flex flex-col justify-between">
-  <div class="max-w-6xl w-full mx-auto space-y-6">
+<body>
+  <div class="container">
     <!-- Header -->
-    <header class="glass p-6 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <div class="space-y-1">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-cyan-400 text-black flex items-center justify-center font-bold text-xl">🌐</div>
-          <h1 class="text-2xl font-bold tracking-tight text-white">CineIntel Engine</h1>
-          <span class="mono text-xs px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold">Parallel Track</span>
+    <header class="glass">
+      <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+        <div class="brand">
+          <div class="logo-box">🌐</div>
+          <h1>CineIntel Engine</h1>
+          <span class="badge mono">Parallel Track</span>
         </div>
-        <p class="text-xs text-slate-400">Open-Web Grounding, Viral Trope Forecasting & Fact-Grounded Script Doctor</p>
+        <p style="font-size: 0.75rem; color: var(--text-muted);">Open-Web Grounding, Film Trend Research & Grounded Screenplay Doctor</p>
       </div>
-      <div class="flex items-center gap-3 text-xs mono">
-        <span id="mode-badge" class="px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300">MODE: DEMO FIXTURES</span>
-        <a href="/docs" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">API Docs (Swagger)</a>
+      <div class="header-controls mono">
+        <span id="mode-badge" class="mode-badge">MODE: DEMO FIXTURES</span>
+        <a href="/docs" class="btn-link">API Docs (Swagger)</a>
       </div>
     </header>
 
     <!-- Main 2-Column Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- Left: Filmmaker Creative Input & Parallel Search -->
-      <div class="glass p-6 rounded-2xl space-y-5">
-        <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
-          <h2 class="text-sm font-bold uppercase tracking-wider text-cyan-400">1. Film Premise & Parallel Web Search</h2>
-          <span class="mono text-[11px] text-slate-400">mcp-parallel-web</span>
+    <div class="grid-2">
+      <!-- Left Column: Input & Search Evidence -->
+      <div class="glass">
+        <div class="card-header">
+          <h2 class="card-title">1. Film Premise & Parallel Search</h2>
+          <span class="mono" style="font-size: 0.7rem; color: var(--text-subtle);">parallel-web</span>
         </div>
 
-        <div class="space-y-3">
-          <div>
-            <label class="text-xs mono text-slate-300 block mb-1">Film Genre & Tone:</label>
-            <input type="text" id="genre-input" value="Sci-Fi / Cyberpunk Noir" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs mono text-white focus:outline-none focus:border-cyan-400">
-          </div>
-
-          <div>
-            <label class="text-xs mono text-slate-300 block mb-1">Creative Film Premise:</label>
-            <textarea id="premise-input" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs mono text-white focus:outline-none focus:border-cyan-400">A rogue synthetic consciousness investigator uncovers a glitch in the city atmospheric control grid.</textarea>
-          </div>
-
-          <button id="run-btn" onclick="runGroundedResearch()" class="w-full py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-black font-bold text-xs mono tracking-wider transition-all glow-cyan">
-            ⚡ Run Parallel Search + Gemini 2.0 Grounded Synthesis
-          </button>
+        <div class="form-group">
+          <label class="mono">Film Genre & Tone:</label>
+          <input type="text" id="genre-input" value="Sci-Fi Noir" class="mono">
         </div>
 
-        <!-- Retrieved Sources Box -->
-        <div id="sources-box" class="space-y-3 pt-2">
-          <span class="text-xs mono text-slate-400 font-semibold block">Parallel Search Source Evidence:</span>
-          <div id="sources-list" class="space-y-2">
-            <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-center text-slate-400 text-xs mono">
-              Click the button above to crawl reference datasets via Parallel Web Systems.
+        <div class="form-group">
+          <label class="mono">Creative Film Premise:</label>
+          <textarea id="premise-input" rows="3" class="mono">A rogue synthetic consciousness investigator uncovers a glitch in the city atmospheric control grid.</textarea>
+        </div>
+
+        <button id="run-btn" onclick="runGroundedResearch()" class="btn-primary mono">
+          ⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis
+        </button>
+
+        <!-- Sources Box -->
+        <div class="sources-box">
+          <span class="mono" style="font-weight: 600; color: var(--text-muted); font-size: 0.75rem;">Parallel Search Source Evidence:</span>
+          <div id="sources-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div class="source-card mono" style="text-align: center; color: var(--text-subtle);">
+              Click the button above to execute open-web research via Parallel Search.
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Right: Gemini 2.0 Fact-Grounded Synthesis -->
-      <div class="glass p-6 rounded-2xl space-y-5">
-        <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
-          <h2 class="text-sm font-bold uppercase tracking-wider text-cyan-400">2. Gemini 2.0 Grounded Synthesis & Script Beats</h2>
-          <span class="mono text-[11px] text-slate-400">Gemini 2.0 Flash</span>
+      <!-- Right Column: Gemini 2.5 Synthesis -->
+      <div class="glass">
+        <div class="card-header">
+          <h2 class="card-title">2. Gemini 2.5 Grounded Synthesis & Script Beats</h2>
+          <span class="mono" style="font-size: 0.7rem; color: var(--text-subtle);">Gemini 2.5 Flash</span>
         </div>
 
-        <div id="synthesis-box" class="space-y-4">
-          <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-center text-slate-400 text-xs mono">
-            Grounded screenplay structure and uncertainty critique will appear here.
+        <div id="synthesis-box">
+          <div class="source-card mono" style="text-align: center; color: var(--text-subtle);">
+            Grounded screenplay treatment and uncertainty critique will appear here.
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <footer class="text-center py-6 text-xs mono text-slate-500">
+  <footer class="mono">
     CineIntel Engine • Google Cloud Agentic Cinema Hackathon • Parallel Partner Track
   </footer>
 
   <script>
+    async function checkHealth() {
+      try {
+        const res = await fetch('/api/v1/health');
+        const data = await res.json();
+        const modeBadge = document.getElementById('mode-badge');
+        if (data.runtime_mode === 'live') {
+          modeBadge.innerText = 'MODE: LIVE PARALLEL WEB';
+          modeBadge.style.color = '#00f0ff';
+          modeBadge.style.borderColor = 'rgba(0, 240, 255, 0.4)';
+          modeBadge.style.backgroundColor = 'rgba(0, 240, 255, 0.1)';
+        } else {
+          modeBadge.innerText = 'MODE: DEMO FIXTURES';
+        }
+      } catch(e) { console.error(e); }
+    }
+    checkHealth();
+
     async function runGroundedResearch() {
       const btn = document.getElementById('run-btn');
       btn.innerText = 'Searching Parallel Web & Synthesizing...';
@@ -104,50 +355,84 @@
         });
         const data = await res.json();
 
-        // 1. Render Sources
+        // 1. Render Sources safely
         const sourcesList = document.getElementById('sources-list');
-        sourcesList.innerHTML = (data.sources || []).map(s => `
-          <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs mono space-y-1">
-            <a href="${s.url}" target="_blank" class="font-bold text-cyan-300 hover:underline block truncate">${s.title}</a>
-            <p class="text-slate-400 text-[11px] line-clamp-2">${s.snippet}</p>
-            <span class="text-[10px] text-slate-500 block truncate">${s.url}</span>
-          </div>
-        `).join('');
+        const sources = data.sources || [];
 
-        // 2. Render Gemini Synthesis
-        const syn = data.gemini_synthesis || {};
+        if (sources.length === 0) {
+          sourcesList.innerHTML = `<div class="source-card mono" style="color: #ef4444;">No research sources retrieved. (Status: ${data.status || 'unknown'})</div>`;
+        } else {
+          sourcesList.innerHTML = sources.map(s => {
+            const isFixture = !s.url || s.url.startsWith('fixture:');
+            const urlDisplay = isFixture 
+              ? `<span class="fixture-tag mono">${s.url}</span>` 
+              : `<a href="${s.url}" target="_blank" class="source-title">${s.title}</a><div style="font-size: 0.65rem; color: #64748b;">${s.url}</div>`;
+            
+            const titleDisplay = isFixture ? `<div class="source-title">${s.title}</div>` : '';
+
+            return `
+              <div class="source-card mono">
+                ${titleDisplay}
+                ${urlDisplay}
+                <p class="source-snippet">${s.snippet || (s.excerpts ? s.excerpts.join(' ') : '')}</p>
+                <div style="font-size: 0.65rem; color: #475569; display: flex; justify-content: space-between;">
+                  <span>Status: ${s.retrieval_status || 'OK'}</span>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // 2. Render Gemini 2.5 Synthesis
         const synBox = document.getElementById('synthesis-box');
+        if (data.status === 'error' || !data.gemini_synthesis) {
+          synBox.innerHTML = `
+            <div class="synthesis-card mono" style="border-color: #ef4444;">
+              <span style="color: #ef4444; font-weight: bold;">Error / Unavailable:</span>
+              <p style="color: #f87171;">${data.error || 'Failed to complete synthesis.'}</p>
+              <div style="font-size: 0.65rem; color: #64748b;">Mode: ${data.mode || 'live_error'}</div>
+            </div>
+          `;
+          return;
+        }
+
+        const syn = data.gemini_synthesis;
+        // Ensure concept_summary is string and not object/dict representation
+        const conceptSummary = typeof syn.concept_summary === 'string' ? syn.concept_summary : JSON.stringify(syn.concept_summary);
+
         synBox.innerHTML = `
-          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3 mono text-xs">
+          <div class="synthesis-card mono">
             <div>
-              <span class="text-[10px] text-cyan-400 block font-bold uppercase tracking-wider">Grounded Concept Title:</span>
-              <h3 class="text-base font-bold text-white">${syn.grounded_title || 'Neon Horizons: Quantum Resonance'}</h3>
-              <p class="text-slate-300 text-xs mt-1">${syn.concept_summary || ''}</p>
+              <span style="font-size: 0.65rem; color: var(--cyan-accent); font-weight: bold; text-transform: uppercase;">Grounded Concept Title:</span>
+              <h3 style="font-size: 1.1rem; font-weight: bold; color: #fff; margin-top: 0.2rem;">${syn.grounded_title || 'Untitled Concept'}</h3>
+              <p style="color: #cbd5e1; font-size: 0.75rem; margin-top: 0.35rem; line-height: 1.4;">${conceptSummary}</p>
             </div>
 
-            <div class="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
-              <span class="text-[11px] text-yellow-400 font-bold block">Market Viability & Uncertainty Critique:</span>
-              <p class="text-slate-300 text-[11px]">${syn.viability_critique || ''}</p>
-              <span class="text-[10px] text-slate-400 block mt-1">Uncertainty Rating: <b class="text-cyan-300">${syn.uncertainty_rating || 'Moderate'}</b></span>
+            <div class="critique-box">
+              <span style="font-size: 0.7rem; color: #f59e0b; font-weight: bold; display: block; margin-bottom: 0.25rem;">Market Evidence & Uncertainty Critique:</span>
+              <p style="color: #cbd5e1; font-size: 0.7rem; line-height: 1.4;">${syn.viability_critique || ''}</p>
+              <div style="font-size: 0.65rem; color: #94a3b8; margin-top: 0.5rem;">
+                Uncertainty Rating: <strong style="color: var(--cyan-accent);">${syn.uncertainty_rating || 'Moderate'}</strong>
+              </div>
             </div>
 
-            <div class="space-y-1 pt-1">
-              <span class="text-[11px] text-slate-400 font-semibold block">Recommended Scene Beats:</span>
-              <ul class="list-disc pl-4 space-y-1 text-slate-300 text-[11px]">
+            <div>
+              <span style="font-size: 0.7rem; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 0.35rem;">Recommended Scene Beats:</span>
+              <ul class="beats-list">
                 ${(syn.recommended_scene_beats || []).map(b => `<li>${b}</li>`).join('')}
               </ul>
             </div>
 
-            <div class="pt-2 border-t border-slate-800 text-[10px] text-slate-500 flex justify-between">
+            <div style="padding-top: 0.5rem; border-top: 1px solid #1e293b; font-size: 0.65rem; color: #64748b; display: flex; justify-content: space-between;">
               <span>Measured Latency: ${data.measured_latency_ms} ms</span>
-              <span>Gemini 2.0 Flash + Parallel MCP</span>
+              <span>Gemini 2.5 Flash + Parallel Search</span>
             </div>
           </div>
         `;
       } catch(e) {
         console.error(e);
       } finally {
-        btn.innerText = '⚡ Run Parallel Search + Gemini 2.0 Grounded Synthesis';
+        btn.innerText = '⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis';
         btn.disabled = false;
       }
     }

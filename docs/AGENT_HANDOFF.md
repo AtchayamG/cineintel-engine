@@ -8,13 +8,13 @@
 ---
 
 ## 1. Executive Summary & Purpose
-**CineIntel Engine** is an autonomous film intelligence and research platform powered by **Parallel Web Systems Search & Extract MCP** and **Gemini 2.0**. Before studio greenlights occur, autonomous agents crawl entertainment news, box office comps, audience sentiment, and cinematography reference LUTs to ground movie creation in real-world cultural and commercial data.
+**CineIntel Engine** is an autonomous film research and screenplay grounding platform powered by the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 2.5 Flash**. Before production greenlights occur, autonomous agents crawl open-web narrative benchmarks, visual reference tropes, and character archetypes to ground movie creation in evidence and explicit uncertainty bounds.
 
 ---
 
 ## 2. Devpost Submission Fields (Copy-Paste Ready)
-- **Project Title:** `CineIntel Engine: Real-Time Web Grounding, Viral Film Trend Forecasting & Autonomous Script Research Agent`
-- **Elevator Pitch:** `An autonomous film intelligence and research engine powered by Parallel Web Systems MCP and Gemini 2.0 that crawls live web datasets, box office comps, and audience sentiment to generate culturally grounded screenplays optimized for commercial and critical resonance.`
+- **Project Title:** `CineIntel Engine: Real-Time Web Grounding, Film Trend Research & Autonomous Script Doctor`
+- **Elevator Pitch:** `An autonomous film intelligence and research engine powered by the Parallel Search API/SDK and Gemini 2.5 Flash that crawls open-web datasets and visual reference benchmarks to generate fact-grounded screenplays with explicit uncertainty critiques.`
 - **Partner Track:** `Parallel Track`
 - **License:** `Apache 2.0` (Included at root)
 
@@ -26,50 +26,56 @@ Track3_Parallel_CineIntel_Engine/
 ├── backend/
 │   ├── app/
 │   │   ├── agents/
-│   │   │   ├── trend_analyst_agent.py     # Live market viability & viral trope researcher
+│   │   │   ├── trend_analyst_agent.py     # Open-web trend evidence & trope researcher
 │   │   │   ├── grounded_writer_agent.py   # Fact-grounded screenplay generation
-│   │   │   └── casting_intel_agent.py     # Demographic appeal & casting affinity
+│   │   │   └── casting_intel_agent.py     # Audience archetype & casting affinity
 │   │   ├── mcp/
-│   │   │   └── parallel_mcp_server.py     # MCP tools (parallel_search_web, parallel_extract_url)
+│   │   │   └── parallel_mcp_server.py     # MCP tool adapter for agents (parallel_search_web, parallel_extract_url)
 │   │   ├── services/
-│   │   │   └── parallel_service.py        # Parallel Web HTTP client & grounding
+│   │   │   ├── parallel_service.py        # Official Parallel Search SDK/API integration (parallel-web)
+│   │   │   └── gemini_service.py          # Google GenAI SDK & Gemini 2.5 Flash synthesis
 │   │   ├── routes/intel_routes.py         # API endpoints (/intel/analyze/trends, /intel/script/grounded)
+│   │   ├── static/index.html              # Production-safe Judge Web UI (no external CDNs, embedded favicon)
 │   │   ├── config.py & main.py            # Configuration & FastAPI entrypoint
-│   │   └── run_backend.py                 # Runner script
-│   └── tests/test_parallel_intel.py       # 4 Automated pytest suites (100% Passed)
+│   │   └── run_backend.py                 # Server runner script
+│   └── tests/test_parallel_intel.py       # 8 Automated pytest suites (100% Passed)
 ├── docs/
 │   ├── DEVPOST_SUBMISSION.md              # Full Devpost submission details
-│   └── AGENT_HANDOFF.md                   # This handoff guide
+│   ├── AGENT_HANDOFF.md                   # This handoff guide
+│   ├── AGY_HANDOFF.md                     # Technical handoff document
+│   ├── ARCHITECTURE.md                    # Architecture whitepaper
+│   ├── SUBMISSION_EVIDENCE.md             # Evidence matrix & verification
+│   └── VIDEO_DEMO_SCRIPT.md               # 3-minute video demo script
 ├── LICENSE                                # Apache 2.0
 └── README.md                              # Main documentation
 ```
 
 ---
 
-## 4. Verification & Testing Commands for Codex
+## 4. Verification & Testing Commands
 
 ### A. Run Automated Backend Tests
 ```bash
-cd "d:\Work\Gemini\Hackathon\Agentic Cinema\Track3_Parallel_CineIntel_Engine\backend"
-python -m pytest tests/ -v
-# Output expectation: 4 passed in ~0.20s
+cd backend
+python -m pytest -v
+# Output expectation: 8 passed in ~0.45s
 ```
 
 ### B. Run Backend Server
 ```bash
 python run_backend.py
-# Server starts on http://localhost:8002 (Swagger docs at /docs)
+# Server starts on http://localhost:8002 (Swagger docs at /docs, Web UI at /)
 ```
 
-### C. Test Sample Trend Analysis API Call
+### C. Test Grounded Script API Call
 ```bash
-curl -X POST "http://localhost:8002/api/v1/intel/analyze/trends" -H "Content-Type: application/json" -d "{\"premise\": \"A rogue cyber detective\", \"genre\": \"Cyberpunk Noir\"}"
+curl -X POST "http://localhost:8002/api/v1/intel/script/grounded" -H "Content-Type: application/json" -d "{\"premise\": \"A rogue cyber detective\", \"genre\": \"Cyberpunk Noir\"}"
 ```
 
 ---
 
 ## 5. Hackathon Judging Rubric Alignment Checklist
-- [x] **Technological Implementation (25%)**: Live Parallel MCP search and URL extraction pipelines integrated with Gemini 2.0 multimodal reasoning.
-- [x] **Design (25%)**: Structured data models for trends, tropes, and demographic affinity scores.
-- [x] **Potential Impact (25%)**: Replaces subjective script greenlighting with data-backed audience intelligence.
-- [x] **Quality of the Idea (25%)**: First AI script development engine grounded in live open-web datasets.
+- [x] **Technological Implementation (25%)**: Official Parallel Search API / SDK (`parallel-web`) integration with `x-api-key` header and `objective`/`search_queries` request structure, integrated with Gemini 2.5 Flash reasoning.
+- [x] **Design (25%)**: Production-safe UI with no external CDN dependencies, embedded favicon, and clean source card rendering.
+- [x] **Potential Impact (25%)**: Replaces subjective greenlighting with evidence-grounded research and explicit uncertainty bounds.
+- [x] **Quality of the Idea (25%)**: Groundbreaking AI script development engine backed by open-web evidence.

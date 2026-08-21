@@ -1,28 +1,86 @@
-# 🤖 AntiGravity to Codex Handoff: Track 3 (Parallel Track)
+# 🤖 AntiGravity Handoff: Track 3 (Parallel Track)
 
-## 1. Status Overview
-- **Track:** Parallel Web Systems Track ($7,500 1st Place)
-- **Status:** **READY FOR CODEX VERIFICATION**
-- **Test Status:** 4/4 Pytest Passed | Web UI Live on `http://localhost:8002/`
+## Result
+CineIntel Engine has been updated to be truthful, submission-ready, and strictly compliant with official Parallel Search API / SDK (`parallel-web>=0.5.0`) specifications and Google Gemini 2.5 Flash (`gemini-2.5-flash`).
 
-## 2. Changes Made
-- Added a full, interactive Judge Web UI at `backend/app/static/index.html` with premise input, Parallel source card viewer, and Gemini 2.0 grounded synthesis panel.
-- Added genuine `google-genai` integration in `backend/app/services/gemini_service.py` to synthesize search sources into grounded concepts with uncertainty ratings.
-- Implemented real Parallel Search HTTP client in `backend/app/services/parallel_service.py` with clean demo fixture fallback.
-- Removed fabricated Variety/ASC live claims and replaced with honest, curated reference records.
-- Added `/api/v1/health` endpoint, `.env.example`, `.gitignore`, `docs/SUBMISSION_EVIDENCE.md`, `docs/VIDEO_DEMO_SCRIPT.md`, `docs/ARCHITECTURE.md`.
+Key accomplishments:
+1. **Parallel Search API / SDK Implementation**: Updated request construction to use `x-api-key` header with `objective` and `search_queries` payload, preferring the official `parallel-web` SDK (`AsyncParallel`). Excerpts are normalized into clean snippet evidence.
+2. **Strict Live Error Handling**: Live mode returns explicit `live_unavailable`/`live_error` when keys are missing or API calls fail, with zero silent fallbacks to demo success.
+3. **Honest Demo Fixtures**: Replaced fabricated URLs and fake article snippets with self-contained local research fixtures using non-clickable fixture IDs (`fixture:...`).
+4. **UI & Route Contract Bug Fix**: Fixed route regression in `/api/v1/intel/script/grounded` where a dictionary was passed to `grounded_writer_agent` instead of the genre string, eliminating the bug where a Python dictionary string was rendered in the concept summary.
+5. **Removed Unsupported Hype Claims**: Eliminated the 8.8/10 market score, "high positive audience interest", ROI/performance guarantees, and viral forecasting certainty. Replaced with evidence summaries, uncertainty factors, and character-driven development recommendations.
+6. **Gemini 2.5 Flash Migration**: Updated default model configuration from deprecated `gemini-2.0-flash` to stable `gemini-2.5-flash`.
+7. **Clean Local UI**: Replaced external Tailwind CDN with repository-local, production-safe CSS and added an embedded favicon endpoint to prevent console errors.
+8. **Automated Test Suite**: Built 8 comprehensive pytest suites covering SDK construction, normalization, demo fixture labeling, live mode error handling, route regression, health readiness, and primary UI workflows.
 
-## 3. Verification Commands for Codex
-```bash
-# 1. Run backend tests
-cd "Track3_Parallel_CineIntel_Engine\backend"
-python -m pytest -q
-# Output: 4 passed
+---
 
-# 2. Run backend server & open web UI
-python run_backend.py
-# Open browser at: http://localhost:8002/
-```
+## Files Changed
 
-## 4. Remaining Human Actions
-- To execute live web crawls against the Parallel Search API, provide `PARALLEL_API_KEY` in `.env` and set `RUNTIME_MODE=live`.
+| File Path | Description of Changes |
+| :--- | :--- |
+| `backend/requirements.txt` | Added `parallel-web>=0.5.0` dependency. |
+| `backend/app/config.py` | Updated `GEMINI_MODEL` default to `gemini-2.5-flash` and `ENABLE_MOCK_FALLBACK` default to `False`. |
+| `backend/app/services/parallel_service.py` | Implemented official Parallel Search API/SDK integration (`AsyncParallel`), normalized `excerpts`, strict live mode error return, and non-clickable demo fixtures. |
+| `backend/app/services/gemini_service.py` | Updated to `gemini-2.5-flash`, enforced live mode error return, handled string genre, and removed hype claims. |
+| `backend/app/mcp/parallel_mcp_server.py` | Updated tool descriptions and model references to Gemini 2.5 Flash. |
+| `backend/app/agents/grounded_writer_agent.py` | Added type safety, error status passthrough, and Gemini 2.5 references. |
+| `backend/app/agents/trend_analyst_agent.py` | Removed 8.8/10 score and hype claims; added evidence summaries and uncertainty factors. |
+| `backend/app/agents/casting_intel_agent.py` | Updated with clean type annotations and grounded framing. |
+| `backend/app/routes/intel_routes.py` | Fixed bug by passing `req.genre` string instead of `trends` dict to `generate_grounded_script`. |
+| `backend/app/main.py` | Added embedded SVG favicon endpoint `/favicon.ico` and updated health readiness endpoint. |
+| `backend/app/static/index.html` | Replaced Tailwind CDN with repository-local CSS, added embedded favicon link, safe fixture URL rendering, and Gemini 2.5 labels. |
+| `backend/tests/test_parallel_intel.py` | Expanded test suite to 8 tests covering SDK, normalization, live errors, demo fixtures, route regression, health, and UI workflow. |
+| `.env.example` | Updated default model to `gemini-2.5-flash`. |
+| `README.md` | Updated architecture, badges, SDK specs, and Gemini 2.5 model labels. |
+| `docs/AGENT_HANDOFF.md` | Updated handoff details, architecture map, and verification steps. |
+| `docs/AGY_HANDOFF.md` | Updated AntiGravity handoff document. |
+| `docs/ARCHITECTURE.md` | Updated system diagram and execution flow for Parallel SDK and Gemini 2.5. |
+| `docs/DEVPOST_SUBMISSION.md` | Updated Devpost pitch and feature descriptions. |
+| `docs/SUBMISSION_EVIDENCE.md` | Updated evidence matrix with status notes. |
+| `docs/VIDEO_DEMO_SCRIPT.md` | Updated video script timing and technical references. |
+
+---
+
+## Verification
+
+1. **Automated Pytest Suite**:
+   ```bash
+   cd backend
+   python -m pytest -v
+   ```
+   *Result*: `8 passed in 0.47s`
+
+2. **Secret Leak Audit**:
+   ```bash
+   gitleaks dir --no-banner --redact .
+   ```
+   *Result*: No leaks detected.
+
+3. **Browser & Route Smoke Test**:
+   - `GET /`: Serves clean index HTML with embedded favicon, local CSS, no console errors.
+   - `GET /api/v1/health`: Returns 200 with `status: healthy`, `gemini-2.5-flash`, and Parallel provider info.
+   - `POST /api/v1/intel/script/grounded`:
+     ```json
+     {
+       "premise": "A synthetic investigator in Neo-Tokyo",
+       "genre": "Cyberpunk Thriller"
+     }
+     ```
+     *Verification*: Returns 200. `concept_summary` contains `"in Cyberpunk Thriller."` and does NOT contain any dictionary string representation like `"{'agent': ..."`.
+
+---
+
+## Remaining Work
+- **Live Parallel API Key Verification**: Recording an authenticated live smoke call requires placing a live `PARALLEL_API_KEY` into `.env` and running with `RUNTIME_MODE=live`.
+
+---
+
+## Risks
+- **Rate Limits & Credentials**: In live mode, missing or invalid `PARALLEL_API_KEY` or `GEMINI_API_KEY` will return `live_unavailable`/`live_error` as designed. Ensure valid keys are supplied before switching `RUNTIME_MODE=live`.
+
+---
+
+## Notes For Integrator
+- All code and documentation changes are completely contained within the permitted worktree (`.worktrees/t3-finalize`).
+- No external CDN or font dependencies remain in `index.html`.

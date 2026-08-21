@@ -3,7 +3,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from app.config import settings
 from app.routes.intel_routes import router as intel_router
 
@@ -13,7 +13,7 @@ logger = logging.getLogger("cineintel.main")
 app = FastAPI(
     title="CineIntel Engine API",
     version="1.0.0",
-    description="Open-Web Grounding, Viral Film Trend Forecasting & Grounded Screenplay Doctor powered by Parallel MCP and Gemini 2.0."
+    description="Open-Web Grounding, Film Trend Research & Grounded Screenplay Doctor powered by Parallel Search API/SDK and Gemini 2.5."
 )
 
 app.add_middleware(
@@ -29,6 +29,12 @@ app.include_router(intel_router, prefix=settings.API_PREFIX)
 static_dir = os.path.join(os.path.dirname(__file__), "static")
 if os.path.exists(static_dir):
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#00f0ff"/><text x="50" y="68" font-size="60" text-anchor="middle" font-family="sans-serif" stroke="none">🌐</text></svg>"""
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(content=FAVICON_SVG, media_type="image/svg+xml")
 
 @app.get("/")
 @app.get("/ui")
@@ -56,9 +62,9 @@ async def health_check():
                 "configured": settings.is_gemini_configured,
                 "model": settings.GEMINI_MODEL
             },
-            "parallel_mcp": {
+            "parallel_web": {
                 "configured": settings.is_parallel_configured,
-                "server": "mcp-parallel-web",
+                "integration": "Official Parallel Search SDK / API (parallel-web)",
                 "status": "LIVE_CONFIGURED" if settings.is_parallel_configured else "DEMO_MODE_ACTIVE"
             }
         }

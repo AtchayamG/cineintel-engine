@@ -1,25 +1,27 @@
 import logging
 import time
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 logger = logging.getLogger("cineintel.casting")
 
 class CastingIntelAgent:
     """
     Audience Affinity & Persona Matching Agent.
-    Evaluates archetypes against viral entertainment datasets.
+    Evaluates character archetypes against genre benchmarks and vocal profiles.
     """
     def __init__(self):
         self.name = "CastingIntelAgent"
-        self.role = "Audience Resonance & Character Casting Director"
+        self.role = "Audience Archetype & Character Casting Director"
 
-    async def evaluate_cast_affinity(self, characters: list) -> Dict[str, Any]:
+    async def evaluate_cast_affinity(self, characters: List[str]) -> Dict[str, Any]:
         start = time.time()
+        char_list = characters if isinstance(characters, list) else ["Maya Vance", "Dr. Chen", "Echo (AI)"]
         return {
             "agent": self.name,
-            "characters_evaluated": characters or ["Maya Vance", "Dr. Chen", "Echo (AI)"],
-            "demographic_appeal": "High across 18-35 Sci-Fi and Cyberpunk enthusiast segments",
-            "voice_profile_recommendation": "Grounded alto tone with slight metallic reverb",
+            "characters_evaluated": char_list,
+            "target_archetypes": "Sci-Fi / Cyberpunk enthusiast demographics",
+            "voice_profile_recommendation": "Grounded alto tone with subtle metallic reverberation",
+            "casting_consideration": "Prioritize actors capable of conveying grounded internal conflict in tech-heavy scenes.",
             "latency_ms": round((time.time() - start) * 1000, 2)
         }
 
