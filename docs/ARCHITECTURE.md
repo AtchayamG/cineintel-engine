@@ -1,7 +1,7 @@
 # 🏗️ CineIntel Engine — Architecture Whitepaper (Parallel Track)
 
 ## 1. System Overview
-**CineIntel Engine** is an autonomous film research and script grounding platform powered by the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 2.5 Flash**. Before production greenlights, autonomous agents crawl open-web narrative benchmarks, visual reference tropes, and cinematography references to ground screenplay development in verifiable evidence and explicit uncertainty bounds.
+**CineIntel Engine** is an autonomous film research and script grounding platform that implements official Parallel Search and Gemini integration paths. Before production greenlights, autonomous agents ground screenplay development in verifiable evidence and explicit uncertainty bounds.
 
 ```mermaid
 graph TD

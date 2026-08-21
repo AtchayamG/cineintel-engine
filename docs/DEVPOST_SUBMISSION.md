@@ -4,7 +4,7 @@
 **CineIntel Engine: Real-Time Web Grounding, Film Trend Research & Autonomous Script Doctor**
 
 ## Elevator Pitch
-An autonomous film intelligence and research engine powered by the official Parallel Search API/SDK and Gemini 2.5 Flash that, in live mode, crawls open-web datasets, box office comps, and visual reference benchmarks to generate fact-grounded screenplays with explicit uncertainty critiques.
+An autonomous film intelligence and research engine that implements official Parallel Search and Gemini integration paths to generate fact-grounded screenplays with explicit uncertainty critiques. The default public evaluator uses deterministic fixtures, the independent Gemini service smoke is proven PASS, and live Parallel execution remains BLOCKED.
 
 ## Selected Track
 **Parallel Track** ($7,500 1st Place)

@@ -14,16 +14,18 @@
 ---
 
 ## 🌟 Overview
-**CineIntel Engine** is an autonomous film intelligence and research platform powered by the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 2.5 Flash**. Before production greenlights occur, autonomous agents (when in live mode) crawl open-web datasets, narrative trope benchmarks, and visual cinematography references to ground screenplay development in verifiable evidence and explicit uncertainty bounds.
+**CineIntel Engine** is an autonomous film intelligence and research platform featuring implemented live integrations of the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 2.5 Flash**. By default, the public app provides deterministic Parallel-shaped research fixtures alongside a local Gemini-shaped synthesis fixture. 
+
+When configured in live mode, autonomous agents query open-web datasets, narrative trope benchmarks, and visual cinematography references using these integrations to ground screenplay development in verifiable evidence and explicit uncertainty bounds. The project includes a successful independent Gemini proof, while the live Parallel integration proof remains distinctly blocked.
 
 ---
 
 ## 🚀 Key Features
 
 1. **🔍 Direct Parallel Web Search Integration**:
-   - Uses the official `parallel-web>=0.5.0` Python SDK (`from parallel import AsyncParallel`) and `x-api-key` request structure (`objective` and `search_queries`) to retrieve web research and excerpts.
+   - Implements the official `parallel-web>=0.5.0` Python SDK (`from parallel import AsyncParallel`) and `x-api-key` request structure (`objective` and `search_queries`) to retrieve web research and excerpts in live mode.
 2. **✍️ Fact-Grounded Screenplay Architecture**:
-   - Ingests real-world excerpts and visual benchmarks into Gemini 2.5 Flash screenplay treatments.
+   - When configured in live mode, ingests real-world excerpts and visual benchmarks into Gemini 2.5 Flash screenplay treatments.
 3. **🎭 Audience Archetype & Casting Intelligence**:
    - Evaluates character archetype resonance against genre benchmarks and voice profile recommendations.
 4. **🤖 Specialized Gemini 2.5 Agent Crew**:
@@ -31,8 +33,8 @@
    - **GroundedWriterAgent**: Synthesizes Parallel search excerpts into grounded screenplay treatments and scene beats.
    - **CastingIntelAgent**: Evaluates character archetypes and casting considerations.
 5. **🛡️ Honest Evidence & Strict Live Error Handling**:
-   - In demo mode, uses self-contained local research fixtures with non-clickable fixture IDs (`fixture:...`).
-   - In live mode, failures return explicit `live_unavailable`/`live_error` without silent demo fallback.
+   - The default public app uses self-contained local research fixtures with non-clickable fixture IDs (`fixture:...`).
+   - In configured live mode, failures return explicit `live_unavailable`/`live_error` without silent demo fallback.
 
 ---
 
@@ -53,6 +55,23 @@ python run_backend.py
 cd backend
 python -m pytest -v
 ```
+
+---
+
+## ☁️ Vercel Deployment
+
+A `vercel.json` configuration is included for easy public deployment of the FastAPI backend. Public deployments default to `demo` mode using honest deterministic fixtures.
+
+When deploying to Vercel, ensure you set the **Root Directory** in your Vercel project settings to `backend`.
+
+```bash
+# Install the Vercel CLI
+npm i -g vercel
+
+# Deploy the project from the root directory
+vercel
+```
+*Note: To run in live mode, ensure you set both `PARALLEL_API_KEY` and `GEMINI_API_KEY` environment variables in your Vercel project settings and change `RUNTIME_MODE` to `live`.*
 
 ---
 

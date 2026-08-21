@@ -10,7 +10,7 @@ Key accomplishments:
 4. **UI & Route Contract Bug Fix**: Fixed route regression in `/api/v1/intel/script/grounded` where a dictionary was passed to `grounded_writer_agent` instead of the genre string, eliminating the bug where a Python dictionary string was rendered in the concept summary.
 5. **Removed Unsupported Hype Claims**: Eliminated the 8.8/10 market score, "high positive audience interest", ROI/performance guarantees, and viral forecasting certainty. Replaced with evidence summaries, uncertainty factors, and character-driven development recommendations.
 6. **Gemini 2.5 Flash Migration**: Updated default model configuration from deprecated `gemini-2.0-flash` to stable `gemini-2.5-flash`.
-7. **Clean Local UI**: Replaced external Tailwind CDN with repository-local, production-safe CSS and added an embedded favicon endpoint to prevent console errors.
+7. **Clean Local UI**: Replaced external Tailwind CDN with repository-local, self-contained judge CSS and added an embedded favicon endpoint to prevent console errors.
 8. **Parallel SDK Base URL & Path Endpoint Normalization**: Added URL normalization helpers in `config.py` and `parallel_service.py` (`normalize_parallel_api_origin`, `get_parallel_sdk_base_url`, `get_parallel_rest_search_url`, `get_parallel_rest_extract_url`) ensuring `AsyncParallel` receives base origin (`https://api.parallel.ai`) without trailing `/v1`, completely eliminating path duplication errors (`/v1/v1/search`).
 9. **Automated Test Suite**: Built 10 comprehensive pytest suites covering SDK construction, path normalization contract, demo fixture labeling, live mode error handling, route regression, health readiness, and primary UI workflows.
 

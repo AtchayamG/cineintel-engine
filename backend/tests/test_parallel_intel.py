@@ -217,3 +217,19 @@ async def test_xss_prevention_static():
     
     assert '<a href="${s.url}"' not in content
     assert '>${s.title}<' not in content
+
+@pytest.mark.asyncio
+async def test_demo_mode_button_reset_regression():
+    """
+    Regression Test for UI Bug:
+    Ensure that after a demo run, the button resets to the exact honest fixture wording,
+    including 'local Gemini-shaped synthesis fixture'.
+    """
+    import os
+    index_path = os.path.join(os.path.dirname(__file__), '..', 'app', 'static', 'index.html')
+    with open(index_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    # The reset label must strictly use this phrasing so it does not regress to 'Gemini 2.5 Synthesis' in demo mode
+    expected_reset_code = "btn.innerText = isLive ? '⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis' : '⚡ Run Deterministic Research Fixtures + local Gemini-shaped synthesis fixture';"
+    assert expected_reset_code in content, "The button reset code in finally block must restore the exact demo fixture wording."

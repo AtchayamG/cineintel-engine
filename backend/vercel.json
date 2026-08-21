@@ -1,0 +1,11 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/app/main.py"
+    }
+  ],
+  "env": {
+    "RUNTIME_MODE": "demo"
+  }
+}

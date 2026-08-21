@@ -272,8 +272,8 @@
       <!-- Left Column: Input & Search Evidence -->
       <div class="glass">
         <div class="card-header">
-          <h2 class="card-title">1. Film Premise & Parallel Search</h2>
-          <span class="mono" style="font-size: 0.7rem; color: var(--text-subtle);">parallel-web</span>
+          <h2 class="card-title" id="card-1-title">1. Film Premise & Deterministic Research Fixtures</h2>
+          <span class="mono" id="card-1-subtitle" style="font-size: 0.7rem; color: var(--text-subtle);">local-fixture-search</span>
         </div>
 
         <div class="form-group">
@@ -287,12 +287,12 @@
         </div>
 
         <button id="run-btn" onclick="runGroundedResearch()" class="btn-primary mono">
-          ⚡ Run Deterministic Research Fixtures + Gemini 2.5 Synthesis
+          ⚡ Run Deterministic Research Fixtures + local Gemini-shaped synthesis fixture
         </button>
 
         <!-- Sources Box -->
         <div class="sources-box">
-          <span class="mono" style="font-weight: 600; color: var(--text-muted); font-size: 0.75rem;">Parallel Search Source Evidence:</span>
+          <span class="mono" id="sources-label" style="font-weight: 600; color: var(--text-muted); font-size: 0.75rem;">Research Source Evidence (Fixtures):</span>
           <div id="sources-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
             <div id="sources-empty-state" class="source-card mono" style="text-align: center; color: var(--text-subtle);">
               Click the button above to execute deterministic research fixtures.
@@ -304,8 +304,8 @@
       <!-- Right Column: Gemini 2.5 Synthesis -->
       <div class="glass">
         <div class="card-header">
-          <h2 class="card-title">2. Gemini 2.5 Grounded Synthesis & Script Beats</h2>
-          <span class="mono" style="font-size: 0.7rem; color: var(--text-subtle);">Gemini 2.5 Flash</span>
+          <h2 class="card-title" id="card-2-title">2. Local Gemini-shaped Synthesis Fixture & Script Beats</h2>
+          <span class="mono" id="card-2-subtitle" style="font-size: 0.7rem; color: var(--text-subtle);">local-synthesis-fixture</span>
         </div>
 
         <div id="synthesis-box">
@@ -351,6 +351,12 @@
         const modeBadge = document.getElementById('mode-badge');
         const runBtn = document.getElementById('run-btn');
         const sourcesEmpty = document.getElementById('sources-empty-state');
+        const card1Title = document.getElementById('card-1-title');
+        const card1Sub = document.getElementById('card-1-subtitle');
+        const card2Title = document.getElementById('card-2-title');
+        const card2Sub = document.getElementById('card-2-subtitle');
+        const sourcesLabel = document.getElementById('sources-label');
+
         if (data.runtime_mode === 'live') {
           modeBadge.innerText = 'MODE: LIVE PARALLEL WEB';
           modeBadge.style.color = '#00f0ff';
@@ -358,9 +364,14 @@
           modeBadge.style.backgroundColor = 'rgba(0, 240, 255, 0.1)';
           if(runBtn) runBtn.innerText = '⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis';
           if(sourcesEmpty) sourcesEmpty.innerText = 'Click the button above to execute open-web research via Parallel Search.';
+          if(card1Title) card1Title.innerText = '1. Film Premise & Parallel Search';
+          if(card1Sub) card1Sub.innerText = 'parallel-web';
+          if(card2Title) card2Title.innerText = '2. Gemini 2.5 Grounded Synthesis & Script Beats';
+          if(card2Sub) card2Sub.innerText = 'Gemini 2.5 Flash';
+          if(sourcesLabel) sourcesLabel.innerText = 'Parallel Search Source Evidence:';
         } else {
           modeBadge.innerText = 'MODE: DEMO FIXTURES';
-          if(runBtn) runBtn.innerText = '⚡ Run Deterministic Research Fixtures + Gemini 2.5 Synthesis';
+          if(runBtn) runBtn.innerText = '⚡ Run Deterministic Research Fixtures + local Gemini-shaped synthesis fixture';
           if(sourcesEmpty) sourcesEmpty.innerText = 'Click the button above to execute deterministic research fixtures.';
         }
       } catch(e) { console.error(e); }
@@ -454,6 +465,14 @@
         
         const safeBeats = (syn.recommended_scene_beats || []).map(b => `<li>${escapeHTML(b)}</li>`).join('');
 
+        const modeLabel = data.mode || currentMode;
+        let providerLabel = "deterministic research fixtures plus local Gemini-shaped synthesis fixture";
+        if (modeLabel === 'live') {
+          const parSrc = escapeHTML(data.parallel_evidence_source || 'Parallel Search');
+          const gemSrc = escapeHTML(data.gemini_evidence_source || 'Gemini 2.5 Flash');
+          providerLabel = `${gemSrc} + ${parSrc}`;
+        }
+
         synBox.innerHTML = `
           <div class="synthesis-card mono">
             <div>
@@ -479,14 +498,14 @@
 
             <div style="padding-top: 0.5rem; border-top: 1px solid #1e293b; font-size: 0.65rem; color: #64748b; display: flex; justify-content: space-between;">
               <span>Measured Latency: ${safeLatency} ms</span>
-              <span>Gemini 2.5 Flash + Parallel Search</span>
+              <span>${providerLabel}</span>
             </div>
           </div>
         `;
       } catch(e) {
         console.error(e);
       } finally {
-        btn.innerText = isLive ? '⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis' : '⚡ Run Deterministic Research Fixtures + Gemini 2.5 Synthesis';
+        btn.innerText = isLive ? '⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis' : '⚡ Run Deterministic Research Fixtures + local Gemini-shaped synthesis fixture';
         btn.disabled = false;
       }
     }

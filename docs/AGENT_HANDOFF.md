@@ -8,13 +8,13 @@
 ---
 
 ## 1. Executive Summary & Purpose
-**CineIntel Engine** is an autonomous film research and screenplay grounding platform powered by the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 2.5 Flash**. Before production greenlights occur, autonomous agents crawl open-web narrative benchmarks, visual reference tropes, and character archetypes to ground movie creation in evidence and explicit uncertainty bounds (crawling open-web datasets is a live-mode capability, with live proof blocked until an API key is supplied).
+**CineIntel Engine** is an autonomous film research and screenplay grounding platform that implements official Parallel Search and Gemini integration paths. Before production greenlights occur, autonomous agents ground movie creation in evidence and explicit uncertainty bounds. The default public evaluator uses deterministic fixtures, the independent Gemini service smoke is proven PASS, and live Parallel execution remains BLOCKED.
 
 ---
 
 ## 2. Devpost Submission Fields (Copy-Paste Ready)
 - **Project Title:** `CineIntel Engine: Real-Time Web Grounding, Film Trend Research & Autonomous Script Doctor`
-- **Elevator Pitch:** `An autonomous film intelligence and research engine powered by the Parallel Search API/SDK and Gemini 2.5 Flash that crawls open-web datasets (live-mode capability) and visual reference benchmarks to generate fact-grounded screenplays with explicit uncertainty critiques. Live proof is blocked until an API key is supplied.`
+- **Elevator Pitch:** `An autonomous film intelligence and research engine that implements official Parallel Search and Gemini integration paths to generate fact-grounded screenplays with explicit uncertainty critiques. The default public evaluator uses deterministic fixtures, the independent Gemini service smoke is proven PASS, and live Parallel execution remains BLOCKED.`
 - **Partner Track:** `Parallel Track`
 - **License:** `Apache 2.0` (Included at root)
 
@@ -35,7 +35,7 @@ Track3_Parallel_CineIntel_Engine/
 │   │   │   ├── parallel_service.py        # Official Parallel Search SDK/API integration (parallel-web)
 │   │   │   └── gemini_service.py          # Google GenAI SDK & Gemini 2.5 Flash synthesis
 │   │   ├── routes/intel_routes.py         # API endpoints (/intel/analyze/trends, /intel/script/grounded)
-│   │   ├── static/index.html              # Production-safe Judge Web UI (no external CDNs, embedded favicon)
+│   │   ├── static/index.html              # self-contained judge Web UI (no external CDNs, embedded favicon)
 │   │   ├── config.py & main.py            # Configuration & FastAPI entrypoint
 │   │   └── run_backend.py                 # Server runner script
 │   └── tests/test_parallel_intel.py       # 8 Automated pytest suites (100% Passed)
@@ -76,6 +76,6 @@ curl -X POST "http://localhost:8002/api/v1/intel/script/grounded" -H "Content-Ty
 
 ## 5. Hackathon Judging Rubric Alignment Checklist
 - [x] **Technological Implementation (25%)**: Official Parallel Search API / SDK (`parallel-web`) integration with `x-api-key` header and `objective`/`search_queries` request structure, integrated with Gemini 2.5 Flash reasoning.
-- [x] **Design (25%)**: Production-safe UI with no external CDN dependencies, embedded favicon, and clean source card rendering.
+- [x] **Design (25%)**: self-contained judge UI with no external CDN dependencies, embedded favicon, and clean source card rendering.
 - [x] **Potential Impact (25%)**: Replaces subjective greenlighting with evidence-grounded research and explicit uncertainty bounds.
 - [x] **Quality of the Idea (25%)**: Groundbreaking AI script development engine backed by open-web evidence.
