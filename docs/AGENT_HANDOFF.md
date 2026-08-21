@@ -8,13 +8,13 @@
 ---
 
 ## 1. Executive Summary & Purpose
-**CineIntel Engine** is an autonomous film research and screenplay grounding platform that implements official Parallel Search and Gemini integration paths. Before production greenlights occur, autonomous agents ground movie creation in evidence and explicit uncertainty bounds. The default public evaluator uses deterministic fixtures, the independent Gemini service smoke is proven PASS, and live Parallel execution remains BLOCKED.
+**CineIntel Engine** is an autonomous film research and screenplay grounding platform that uses official Parallel Search and Gemini integration paths. Before production greenlights occur, autonomous agents ground movie creation in evidence and explicit uncertainty bounds. The default public evaluator uses deterministic fixtures; independent authenticated smoke evidence proves both live services.
 
 ---
 
 ## 2. Devpost Submission Fields (Copy-Paste Ready)
 - **Project Title:** `CineIntel Engine: Real-Time Web Grounding, Film Trend Research & Autonomous Script Doctor`
-- **Elevator Pitch:** `An autonomous film intelligence and research engine that implements official Parallel Search and Gemini integration paths to generate fact-grounded screenplays with explicit uncertainty critiques. The default public evaluator uses deterministic fixtures, the independent Gemini service smoke is proven PASS, and live Parallel execution remains BLOCKED.`
+- **Elevator Pitch:** `An autonomous film intelligence engine that uses official Parallel Search and Gemini to turn a premise into a source-aware treatment, uncertainty critique, and actionable scene beats.`
 - **Partner Track:** `Parallel Track`
 - **License:** `MIT` (Included at root)
 
