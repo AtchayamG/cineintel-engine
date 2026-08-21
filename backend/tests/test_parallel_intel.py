@@ -170,6 +170,9 @@ async def test_primary_ui_workflow_endpoints():
         # GET /
         resp_ui = await ac.get("/")
         assert resp_ui.status_code == 200
+        ui_html = resp_ui.text
+        assert "MODE: DEMO FIXTURES" in ui_html
+        assert "Run Deterministic Research Fixtures" in ui_html
 
         # POST /api/v1/intel/analyze/trends
         resp_trends = await ac.post("/api/v1/intel/analyze/trends", json={

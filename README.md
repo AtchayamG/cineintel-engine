@@ -14,7 +14,7 @@
 ---
 
 ## 🌟 Overview
-**CineIntel Engine** is an autonomous film intelligence and research platform powered by the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 2.5 Flash**. Before production greenlights occur, autonomous agents crawl open-web datasets, narrative trope benchmarks, and visual cinematography references to ground screenplay development in verifiable evidence and explicit uncertainty bounds.
+**CineIntel Engine** is an autonomous film intelligence and research platform powered by the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 2.5 Flash**. Before production greenlights occur, autonomous agents (when in live mode) crawl open-web datasets, narrative trope benchmarks, and visual cinematography references to ground screenplay development in verifiable evidence and explicit uncertainty bounds.
 
 ---
 

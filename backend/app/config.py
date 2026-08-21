@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     
     # Parallel Web API
     PARALLEL_API_KEY: str = os.getenv("PARALLEL_API_KEY", "")
-    PARALLEL_BASE_URL: str = os.getenv("PARALLEL_BASE_URL", "https://api.parallel.ai/v1")
+    PARALLEL_BASE_URL: str = os.getenv("PARALLEL_BASE_URL", "https://api.parallel.ai")
 
     @property
     def parallel_api_origin(self) -> str:

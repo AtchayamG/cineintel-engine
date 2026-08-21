@@ -287,15 +287,15 @@
         </div>
 
         <button id="run-btn" onclick="runGroundedResearch()" class="btn-primary mono">
-          ⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis
+          ⚡ Run Deterministic Research Fixtures + Gemini 2.5 Synthesis
         </button>
 
         <!-- Sources Box -->
         <div class="sources-box">
           <span class="mono" style="font-weight: 600; color: var(--text-muted); font-size: 0.75rem;">Parallel Search Source Evidence:</span>
           <div id="sources-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <div class="source-card mono" style="text-align: center; color: var(--text-subtle);">
-              Click the button above to execute open-web research via Parallel Search.
+            <div id="sources-empty-state" class="source-card mono" style="text-align: center; color: var(--text-subtle);">
+              Click the button above to execute deterministic research fixtures.
             </div>
           </div>
         </div>
@@ -322,18 +322,26 @@
   </footer>
 
   <script>
+    let currentMode = 'demo';
     async function checkHealth() {
       try {
         const res = await fetch('/api/v1/health');
         const data = await res.json();
+        currentMode = data.runtime_mode;
         const modeBadge = document.getElementById('mode-badge');
+        const runBtn = document.getElementById('run-btn');
+        const sourcesEmpty = document.getElementById('sources-empty-state');
         if (data.runtime_mode === 'live') {
           modeBadge.innerText = 'MODE: LIVE PARALLEL WEB';
           modeBadge.style.color = '#00f0ff';
           modeBadge.style.borderColor = 'rgba(0, 240, 255, 0.4)';
           modeBadge.style.backgroundColor = 'rgba(0, 240, 255, 0.1)';
+          if(runBtn) runBtn.innerText = '⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis';
+          if(sourcesEmpty) sourcesEmpty.innerText = 'Click the button above to execute open-web research via Parallel Search.';
         } else {
           modeBadge.innerText = 'MODE: DEMO FIXTURES';
+          if(runBtn) runBtn.innerText = '⚡ Run Deterministic Research Fixtures + Gemini 2.5 Synthesis';
+          if(sourcesEmpty) sourcesEmpty.innerText = 'Click the button above to execute deterministic research fixtures.';
         }
       } catch(e) { console.error(e); }
     }
@@ -341,7 +349,8 @@
 
     async function runGroundedResearch() {
       const btn = document.getElementById('run-btn');
-      btn.innerText = 'Searching Parallel Web & Synthesizing...';
+      const isLive = currentMode === 'live';
+      btn.innerText = isLive ? 'Searching Parallel Search & Synthesizing...' : 'Loading Deterministic Research Fixtures & Synthesizing...';
       btn.disabled = true;
 
       const genre = document.getElementById('genre-input').value;
@@ -432,7 +441,7 @@
       } catch(e) {
         console.error(e);
       } finally {
-        btn.innerText = '⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis';
+        btn.innerText = isLive ? '⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis' : '⚡ Run Deterministic Research Fixtures + Gemini 2.5 Synthesis';
         btn.disabled = false;
       }
     }
