@@ -7,7 +7,7 @@ logger = logging.getLogger("cineintel.mcp")
 class ParallelMCPServer:
     """
     Model Context Protocol (MCP) Server adapter for Parallel Web Systems integration.
-    Exposes core tools to Gemini 2.5 agents:
+    Exposes core tools to Gemini 3.7 agents:
       1. `parallel_search_web`: Live search for film trends & tropes via Parallel Search API
       2. `parallel_extract_url`: Clean markdown/entity extraction from URLs
     """

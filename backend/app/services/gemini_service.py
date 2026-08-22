@@ -9,7 +9,7 @@ logger = logging.getLogger("cineintel.gemini")
 
 class GeminiService:
     """
-    Google GenAI SDK & Gemini 2.5 Integration Service for CineIntel Engine.
+    Google GenAI SDK & Gemini 3.7 Integration Service for CineIntel Engine.
     Synthesizes open-web research returned from Parallel Search into
     fact-grounded screenplay treatments, scene beats, and uncertainty-bounded viability critiques.
     """
@@ -38,7 +38,7 @@ class GeminiService:
 
     def synthesize_research_and_script(self, premise: str, genre: str, search_sources: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
-        Calls Gemini 2.5 Flash to ground screenplay development using Parallel Search sources.
+        Calls Gemini 3.7 Flash to ground screenplay development using Parallel Search sources.
         """
         start_time = time.time()
         

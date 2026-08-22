@@ -10,7 +10,7 @@ class GroundedWriterAgent:
     """
     Autonomous Grounded Screenwriter Agent.
     Infuses real-world data, scientific accuracy, and cultural zeitgeist
-    into Gemini 2.5 screenplay generation using Parallel Search & Extract.
+    into Gemini 3.7 screenplay generation using Parallel Search & Extract.
     """
     def __init__(self):
         self.name = "GroundedWriterAgent"
@@ -39,7 +39,7 @@ class GroundedWriterAgent:
                 "measured_latency_ms": round((time.time() - start) * 1000, 2)
             }
 
-        # Step 2: Call Gemini 2.5 to synthesize sources into grounded concept
+        # Step 2: Call Gemini 3.7 to synthesize sources into grounded concept
         gemini_res = gemini_service.synthesize_research_and_script(premise, genre_str, sources)
 
         return {

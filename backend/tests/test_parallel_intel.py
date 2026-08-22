@@ -230,6 +230,6 @@ async def test_demo_mode_button_reset_regression():
     with open(index_path, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # The reset label must strictly use this phrasing so it does not regress to 'Gemini 2.5 Synthesis' in demo mode
-    expected_reset_code = "btn.innerText = isLive ? '⚡ Run Parallel Search + Gemini 2.5 Grounded Synthesis' : '⚡ Run Deterministic Research Fixtures + local Gemini-shaped synthesis fixture';"
+    # The reset label must strictly use this phrasing so it does not regress to 'Gemini 3.7 Synthesis' in demo mode
+    expected_reset_code = "btn.innerText = isLive ? '⚡ Run Parallel Search + Gemini 3.7 Grounded Synthesis' : '⚡ Run Deterministic Research Fixtures + local Gemini-shaped synthesis fixture';"
     assert expected_reset_code in content, "The button reset code in finally block must restore the exact demo fixture wording."

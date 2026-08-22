@@ -1,5 +1,7 @@
 # 🤖 AntiGravity Handoff: Track 3 (Parallel Track)
 
+> Historical note: this handoff records the earlier Gemini 2.5 hardening pass. The current implementation and judge-facing materials use `gemini-3.7-flash`; see `docs/AGENT_HANDOFF.md` and `docs/SUBMISSION_EVIDENCE.md` for current state.
+
 ## Result
 CineIntel Engine has been updated to be truthful, submission-ready, and strictly compliant with official Parallel Search API / SDK (`parallel-web>=0.5.0`) specifications and Google Gemini 2.5 Flash (`gemini-2.5-flash`).
 

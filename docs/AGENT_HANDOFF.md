@@ -33,7 +33,7 @@ Track3_Parallel_CineIntel_Engine/
 │   │   │   └── parallel_mcp_server.py     # MCP tool adapter for agents (parallel_search_web, parallel_extract_url)
 │   │   ├── services/
 │   │   │   ├── parallel_service.py        # Official Parallel Search SDK/API integration (parallel-web)
-│   │   │   └── gemini_service.py          # Google GenAI SDK & Gemini 2.5 Flash synthesis
+│   │   │   └── gemini_service.py          # Google GenAI SDK & Gemini 3.7 Flash synthesis
 │   │   ├── routes/intel_routes.py         # API endpoints (/intel/analyze/trends, /intel/script/grounded)
 │   │   ├── static/index.html              # self-contained judge Web UI (no external CDNs, embedded favicon)
 │   │   ├── config.py & main.py            # Configuration & FastAPI entrypoint
@@ -75,7 +75,7 @@ curl -X POST "http://localhost:8002/api/v1/intel/script/grounded" -H "Content-Ty
 ---
 
 ## 5. Hackathon Judging Rubric Alignment Checklist
-- [x] **Technological Implementation (25%)**: Official Parallel Search API / SDK (`parallel-web`) integration with `x-api-key` header and `objective`/`search_queries` request structure, integrated with Gemini 2.5 Flash reasoning.
+- [x] **Technological Implementation (25%)**: Official Parallel Search API / SDK (`parallel-web`) integration with `x-api-key` header and `objective`/`search_queries` request structure, integrated with Gemini 3.7 Flash reasoning.
 - [x] **Design (25%)**: self-contained judge UI with no external CDN dependencies, embedded favicon, and clean source card rendering.
 - [x] **Potential Impact (25%)**: Replaces subjective greenlighting with evidence-grounded research and explicit uncertainty bounds.
 - [x] **Quality of the Idea (25%)**: Groundbreaking AI script development engine backed by open-web evidence.

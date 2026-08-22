@@ -13,7 +13,7 @@ logger = logging.getLogger("cineintel.main")
 app = FastAPI(
     title="CineIntel Engine API",
     version="1.0.0",
-    description="Open-Web Grounding, Film Trend Research & Grounded Screenplay Doctor powered by Parallel Search API/SDK and Gemini 2.5."
+    description="Open-Web Grounding, Film Trend Research & Grounded Screenplay Doctor powered by Parallel Search API/SDK and Gemini 3.7."
 )
 
 app.add_middleware(

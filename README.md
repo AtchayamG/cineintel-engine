@@ -6,7 +6,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Parallel Search](https://img.shields.io/badge/Parallel%20Web-Search%20API-00F0FF)](https://parallel.ai)
-[![Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-4285F4?logo=google&logoColor=white)](https://cloud.google.com/vertex-ai)
+[![Gemini](https://img.shields.io/badge/Google%20Gemini-3.7%20Flash-4285F4?logo=google&logoColor=white)](https://cloud.google.com/vertex-ai)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 
 </div>
@@ -14,9 +14,9 @@
 ---
 
 ## 🌟 Overview
-**CineIntel Engine** is an autonomous film intelligence and research platform featuring implemented live integrations of the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 2.5 Flash**. By default, the public app provides deterministic Parallel-shaped research fixtures alongside a local Gemini-shaped synthesis fixture. 
+**CineIntel Engine** is an autonomous film intelligence and research platform featuring implemented live integrations of the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 3.7 Flash**. By default, the public app provides deterministic Parallel-shaped research fixtures alongside a local Gemini-shaped synthesis fixture. 
 
-When configured in live mode, autonomous agents query open-web sources and preserve titles, URLs, excerpts, and retrieval status to ground screenplay development in verifiable evidence and explicit uncertainty bounds. Independent authenticated smoke checks now prove both Gemini 2.5 Flash and the official Parallel Search endpoint; the public evaluator remains deterministic demo mode for repeatability.
+When configured in live mode, autonomous agents query open-web sources and preserve titles, URLs, excerpts, and retrieval status to ground screenplay development in verifiable evidence and explicit uncertainty bounds. Independent authenticated smoke checks now prove both Gemini 3.7 Flash and the official Parallel Search endpoint; the public evaluator remains deterministic demo mode for repeatability.
 
 ---
 
@@ -25,10 +25,10 @@ When configured in live mode, autonomous agents query open-web sources and prese
 1. **🔍 Direct Parallel Web Search Integration**:
    - Implements the official `parallel-web>=0.5.0` Python SDK (`from parallel import AsyncParallel`) and `x-api-key` request structure (`objective` and `search_queries`) to retrieve web research and excerpts in live mode.
 2. **✍️ Fact-Grounded Screenplay Architecture**:
-   - When configured in live mode, ingests real-world excerpts and visual benchmarks into Gemini 2.5 Flash screenplay treatments.
+   - When configured in live mode, ingests real-world excerpts and visual benchmarks into Gemini 3.7 Flash screenplay treatments.
 3. **🎭 Audience Archetype & Casting Intelligence**:
    - Evaluates character archetype resonance against genre benchmarks and voice profile recommendations.
-4. **🤖 Specialized Gemini 2.5 Agent Crew**:
+4. **🤖 Specialized Gemini 3.7 Agent Crew**:
    - **TrendAnalystAgent**: Researches open-web narrative tropes and presents evidence with uncertainty factors.
    - **GroundedWriterAgent**: Synthesizes Parallel search excerpts into grounded screenplay treatments and scene beats.
    - **CastingIntelAgent**: Evaluates character archetypes and casting considerations.
