@@ -16,7 +16,7 @@
 ## 🌟 Overview
 **CineIntel Engine** is an autonomous film intelligence and research platform featuring implemented live integrations of the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 3.7 Flash**. By default, the public app provides deterministic Parallel-shaped research fixtures alongside a local Gemini-shaped synthesis fixture. 
 
-When configured in live mode, autonomous agents query open-web sources and preserve titles, URLs, excerpts, and retrieval status to ground screenplay development in verifiable evidence and explicit uncertainty bounds. Independent authenticated smoke checks now prove both Gemini 3.7 Flash and the official Parallel Search endpoint; the public evaluator remains deterministic demo mode for repeatability.
+When configured in live mode, autonomous agents query open-web sources and preserve titles, URLs, excerpts, and retrieval status to ground screenplay development in verifiable evidence and explicit uncertainty bounds. Independent authenticated checks prove the official Parallel Search endpoint and the historical Gemini 2.5 SDK path. The current implementation targets Gemini 3.7 Flash; no authenticated 3.7 or end-to-end Parallel-plus-Gemini call is claimed. The public evaluator remains deterministic demo mode for repeatability.
 
 ---
 
