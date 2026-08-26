@@ -1,7 +1,7 @@
 import logging
 import time
 import httpx
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from app.config import (
     settings,
     normalize_parallel_api_origin,
@@ -19,8 +19,24 @@ class ParallelService:
     Utilizes the official Parallel Search API / SDK (`parallel-web`).
     """
     def __init__(self):
-        self.api_key = settings.PARALLEL_API_KEY
-        self.runtime_mode = settings.RUNTIME_MODE
+        self._api_key: Optional[str] = None
+        self._runtime_mode: Optional[str] = None
+
+    @property
+    def api_key(self) -> str:
+        return self._api_key if self._api_key is not None else settings.PARALLEL_API_KEY
+
+    @api_key.setter
+    def api_key(self, val: str):
+        self._api_key = val
+
+    @property
+    def runtime_mode(self) -> str:
+        return self._runtime_mode if self._runtime_mode is not None else settings.PARTNER_RUNTIME_MODE
+
+    @runtime_mode.setter
+    def runtime_mode(self, val: str):
+        self._runtime_mode = val
 
     @property
     def sdk_base_url(self) -> str:

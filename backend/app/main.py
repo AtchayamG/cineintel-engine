@@ -45,27 +45,34 @@ async def serve_ui():
     return {
         "service": settings.PROJECT_NAME,
         "track": settings.TRACK,
-        "mode": settings.RUNTIME_MODE,
+        "mode": settings.effective_runtime_mode,
         "status": "healthy",
         "docs": "/docs"
     }
 
 @app.get("/api/v1/health")
 async def health_check():
+    gemini_mode = settings.GEMINI_RUNTIME_MODE
+    partner_mode = settings.PARTNER_RUNTIME_MODE
     return {
         "status": "healthy",
         "service": settings.PROJECT_NAME,
         "track": settings.TRACK,
-        "runtime_mode": settings.RUNTIME_MODE,
+        "runtime_mode": settings.effective_runtime_mode,
         "providers": {
             "google_gemini": {
+                "mode": gemini_mode,
                 "configured": settings.is_gemini_configured,
-                "model": settings.GEMINI_MODEL
+                "model": settings.GEMINI_MODEL,
+                "status": "LIVE_CONFIGURED" if (gemini_mode == "live" and settings.is_gemini_configured) else ("LIVE_MISSING_CONFIG" if gemini_mode == "live" else "DEMO_MODE_ACTIVE"),
+                "evidence": settings.gemini_configured_evidence
             },
             "parallel_web": {
+                "mode": partner_mode,
                 "configured": settings.is_parallel_configured,
                 "integration": "Official Parallel Search SDK / API (parallel-web)",
-                "status": "LIVE_CONFIGURED" if settings.is_parallel_configured else "DEMO_MODE_ACTIVE"
+                "status": "LIVE_CONFIGURED" if (partner_mode == "live" and settings.is_parallel_configured) else ("LIVE_MISSING_CONFIG" if partner_mode == "live" else "DEMO_MODE_ACTIVE"),
+                "evidence": settings.parallel_configured_evidence
             }
         }
     }

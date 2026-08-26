@@ -14,25 +14,76 @@ class GeminiService:
     fact-grounded screenplay treatments, scene beats, and uncertainty-bounded viability critiques.
     """
     def __init__(self):
-        self.api_key = settings.GEMINI_API_KEY
-        self.project = settings.GOOGLE_CLOUD_PROJECT
-        self.location = settings.GOOGLE_CLOUD_LOCATION
-        self.model_name = settings.GEMINI_MODEL
-        self.runtime_mode = settings.RUNTIME_MODE
+        self._api_key: Optional[str] = None
+        self._project: Optional[str] = None
+        self._location: Optional[str] = None
+        self._model_name: Optional[str] = None
+        self._runtime_mode: Optional[str] = None
         self.client = None
         self._init_client()
 
+    @property
+    def api_key(self) -> str:
+        return self._api_key if self._api_key is not None else settings.GEMINI_API_KEY
+
+    @api_key.setter
+    def api_key(self, val: str):
+        self._api_key = val
+
+    @property
+    def project(self) -> str:
+        return self._project if self._project is not None else settings.GOOGLE_CLOUD_PROJECT
+
+    @project.setter
+    def project(self, val: str):
+        self._project = val
+
+    @property
+    def location(self) -> str:
+        return self._location if self._location is not None else settings.GOOGLE_CLOUD_LOCATION
+
+    @location.setter
+    def location(self, val: str):
+        self._location = val
+
+    @property
+    def model_name(self) -> str:
+        return self._model_name if self._model_name is not None else settings.GEMINI_MODEL
+
+    @model_name.setter
+    def model_name(self, val: str):
+        self._model_name = val
+
+    @property
+    def runtime_mode(self) -> str:
+        return self._runtime_mode if self._runtime_mode is not None else settings.GEMINI_RUNTIME_MODE
+
+    @runtime_mode.setter
+    def runtime_mode(self, val: str):
+        self._runtime_mode = val
+
     def _init_client(self):
-        if self.api_key or (self.project and self.location):
+        if self.api_key:
             try:
                 from google import genai
-                if self.api_key:
-                    self.client = genai.Client(api_key=self.api_key)
-                else:
-                    self.client = genai.Client(vertexai=True, project=self.project, location=self.location)
-                logger.info(f"Initialized Google GenAI Client with model: {self.model_name} (Mode: LIVE)")
+                self.client = genai.Client(api_key=self.api_key)
+                logger.info(f"Initialized Google GenAI Client with model: {self.model_name} (Mode: LIVE API KEY)")
             except Exception as e:
-                logger.warning(f"Could not initialize google-genai client ({e}).")
+                logger.warning(f"Could not initialize google-genai client with API key ({e}).")
+        elif self.project:
+            try:
+                from google import genai
+                self.client = genai.Client(vertexai=True, project=self.project, location=self.location or "global")
+                logger.info(f"Initialized Google GenAI Client on Vertex AI (project: {self.project}, location: {self.location}, model: {self.model_name})")
+            except Exception as e:
+                logger.warning(f"Could not initialize google-genai client on Vertex AI ({e}).")
+        elif self.runtime_mode == "live":
+            try:
+                from google import genai
+                self.client = genai.Client(vertexai=True, location=self.location or "global")
+                logger.info(f"Initialized Google GenAI Client via Cloud Run ADC (location: {self.location}, model: {self.model_name})")
+            except Exception as e:
+                logger.warning(f"Could not initialize google-genai client via Cloud Run ADC ({e}).")
         else:
             logger.info("No Gemini credentials found. Running in deterministic DEMO fixture mode.")
 

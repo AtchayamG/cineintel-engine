@@ -4,6 +4,7 @@ from app.main import app
 import httpx
 from parallel import AsyncParallel
 from app.config import (
+    Settings,
     settings,
     normalize_parallel_api_origin,
     get_parallel_sdk_base_url,
@@ -237,3 +238,125 @@ async def test_demo_mode_button_reset_regression():
 
 def test_vertex_default_location_supports_gemini_37():
     assert settings.GOOGLE_CLOUD_LOCATION == "global"
+
+
+def test_runtime_modes_defaulting_to_base_runtime_mode():
+    s_demo = Settings(RUNTIME_MODE="demo")
+    assert s_demo.RUNTIME_MODE == "demo"
+    assert s_demo.GEMINI_RUNTIME_MODE == "demo"
+    assert s_demo.PARTNER_RUNTIME_MODE == "demo"
+    assert s_demo.effective_runtime_mode == "demo"
+
+    s_live = Settings(RUNTIME_MODE="live")
+    assert s_live.RUNTIME_MODE == "live"
+    assert s_live.GEMINI_RUNTIME_MODE == "live"
+    assert s_live.PARTNER_RUNTIME_MODE == "live"
+    assert s_live.effective_runtime_mode == "live"
+
+    s_hybrid1 = Settings(RUNTIME_MODE="demo", GEMINI_RUNTIME_MODE="live")
+    assert s_hybrid1.GEMINI_RUNTIME_MODE == "live"
+    assert s_hybrid1.PARTNER_RUNTIME_MODE == "demo"
+    assert s_hybrid1.effective_runtime_mode == "hybrid"
+
+    s_hybrid2 = Settings(RUNTIME_MODE="live", PARTNER_RUNTIME_MODE="demo")
+    assert s_hybrid2.GEMINI_RUNTIME_MODE == "live"
+    assert s_hybrid2.PARTNER_RUNTIME_MODE == "demo"
+    assert s_hybrid2.effective_runtime_mode == "hybrid"
+
+    s_hybrid3 = Settings(RUNTIME_MODE="hybrid")
+    assert s_hybrid3.GEMINI_RUNTIME_MODE == "live"
+    assert s_hybrid3.PARTNER_RUNTIME_MODE == "demo"
+    assert s_hybrid3.effective_runtime_mode == "hybrid"
+
+
+def test_independent_service_runtime_modes(monkeypatch):
+    gemini = GeminiService()
+    parallel = ParallelService()
+
+    # Test dynamic binding to settings
+    monkeypatch.setattr(settings, "GEMINI_RUNTIME_MODE", "live")
+    monkeypatch.setattr(settings, "PARTNER_RUNTIME_MODE", "demo")
+    assert gemini.runtime_mode == "live"
+    assert parallel.runtime_mode == "demo"
+
+    # Test explicit override on instance
+    gemini.runtime_mode = "demo"
+    assert gemini.runtime_mode == "demo"
+    parallel.runtime_mode = "live"
+    assert parallel.runtime_mode == "live"
+
+
+@pytest.mark.asyncio
+async def test_health_truthful_hybrid_reporting(monkeypatch):
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        # Case 1: Hybrid mode (Gemini live, Parallel demo)
+        monkeypatch.setattr(settings, "GEMINI_RUNTIME_MODE", "live")
+        monkeypatch.setattr(settings, "PARTNER_RUNTIME_MODE", "demo")
+        monkeypatch.setattr(settings, "RUNTIME_MODE", "demo")
+
+        resp = await ac.get("/api/v1/health")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["status"] == "healthy"
+        assert data["runtime_mode"] == "hybrid"
+        assert data["providers"]["google_gemini"]["mode"] == "live"
+        assert data["providers"]["parallel_web"]["mode"] == "demo"
+        assert "evidence" in data["providers"]["google_gemini"]
+        assert "evidence" in data["providers"]["parallel_web"]
+
+        # Case 2: All live
+        monkeypatch.setattr(settings, "GEMINI_RUNTIME_MODE", "live")
+        monkeypatch.setattr(settings, "PARTNER_RUNTIME_MODE", "live")
+        resp = await ac.get("/api/v1/health")
+        data = resp.json()
+        assert data["runtime_mode"] == "live"
+        assert data["providers"]["google_gemini"]["mode"] == "live"
+        assert data["providers"]["parallel_web"]["mode"] == "live"
+
+        # Case 3: All demo
+        monkeypatch.setattr(settings, "GEMINI_RUNTIME_MODE", "demo")
+        monkeypatch.setattr(settings, "PARTNER_RUNTIME_MODE", "demo")
+        resp = await ac.get("/api/v1/health")
+        data = resp.json()
+        assert data["runtime_mode"] == "demo"
+        assert data["providers"]["google_gemini"]["mode"] == "demo"
+        assert data["providers"]["parallel_web"]["mode"] == "demo"
+
+
+def test_cloud_run_adc_configured_evidence(monkeypatch):
+    s = Settings(GOOGLE_CLOUD_PROJECT="hackathon-gemini-proj", GOOGLE_CLOUD_LOCATION="global")
+    assert s.is_gemini_configured is True
+    assert "Vertex AI ADC configured" in s.gemini_configured_evidence
+    assert "hackathon-gemini-proj" in s.gemini_configured_evidence
+
+    monkeypatch.setenv("K_SERVICE", "cineintel-backend")
+    s_cr = Settings(GOOGLE_CLOUD_PROJECT="", GEMINI_API_KEY="")
+    assert s_cr.is_gemini_configured is True
+    assert "Cloud Run runtime environment detected" in s_cr.gemini_configured_evidence
+
+
+@pytest.mark.asyncio
+async def test_live_modes_fail_closed_without_silent_fallback():
+    # Parallel service fails closed in live mode
+    p_service = ParallelService()
+    p_service.runtime_mode = "live"
+    p_service.api_key = ""
+    p_res = await p_service.search_open_web("cinematography tropes")
+    assert p_res["status"] == "error"
+    assert p_res["mode"] == "live_unavailable"
+    assert p_res["results"] == []
+
+    p_ext = await p_service.extract_url("https://example.com/film")
+    assert p_ext["status"] == "error"
+    assert p_ext["mode"] == "live_unavailable"
+
+    # Gemini service fails closed in live mode
+    g_service = GeminiService()
+    g_service.runtime_mode = "live"
+    g_service.client = None
+    g_res = g_service.synthesize_research_and_script("Cyberpunk detective", "Sci-Fi Noir", [])
+    assert g_res["success"] is False
+    assert g_res["mode"] == "live_unavailable"
+    assert g_res["data"] is None
+
