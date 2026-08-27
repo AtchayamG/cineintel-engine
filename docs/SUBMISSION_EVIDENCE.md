@@ -12,3 +12,4 @@
 | **Open Source License** | `LICENSE` | **PASS** | File inspect | Standard MIT Open Source License. |
 | **Environment Template** | `.env.example` | **PASS** | File inspect | Contains parameter names and explanations without secrets. |
 | **Health / Readiness Endpoint** | `backend/app/main.py` (`/api/v1/health`) | **PASS** | `GET /api/v1/health` | Exposes provider configuration state and model configuration. |
+| **Supplemental Pre-Generated Cinematic Evidence** | `evidence_media/Track3_CineIntel/final/astra_yuddha_celestial_trailer.mp4`<br/>`evidence_media/Track3_CineIntel/final/manifest.json` | **PASS** | `ffprobe astra_yuddha_celestial_trailer.mp4` | 56.03-second 7-shot mythological epic continuation trailer (*Astra Yuddha: The Celestial Trial*) generated with `veo-3.1-fast-generate-001` at 1080p 24fps with continuous synthesized South Indian orchestral battle BGM. Demonstrates deep mythological research and character continuity. |
