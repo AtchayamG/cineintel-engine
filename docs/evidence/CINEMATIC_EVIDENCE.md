@@ -3,11 +3,14 @@
 ## Production Overview
 - **Title:** *Astra Yuddha: The Celestial Trial (அஸ்திர யுத்தம்)*
 - **Track:** Track 3 — Parallel Track (*CineIntel Engine*)
-- **Duration:** 56.03 seconds (7 continuous 8-second shots)
-- **Format:** 1920×1080 @ 24 fps (H.264 / AAC 48 kHz stereo)
-- **Audio:** Pure Native Veo action Foley (galloping war horses, clashing bronze swords, divine energy shockwaves, battle cries; repeating BGM removed)
-- **Generation Model:** `veo-3.1-fast-generate-001` on Google Cloud Vertex AI
-- **Master Reel SHA-256:** `c97dff90b83c3b868f01684a179fd5a8027d965789e5329a6e3c711465e6f2c7`
+- **Duration:** 56.000 seconds video stream (1,344 frames @ 24 fps) | 56.031 seconds container
+- **Format:** 1920×1080 @ 24 fps (H.264 / AAC 48 kHz stereo, EBU R128 Compliant: -15.6 LUFS, -1.1 dBTP peak)
+- **Audio & Score:** Google Vertex AI **Lyria 3 Pro** (`lyria-3-pro-preview`, Candidate 3B — “Crown Against Heaven”) mixed with authentic reconstructed Veo action Foley (bronze swords, chariot rumbling, divine energy, war horns)
+- **Generation Models:** `veo-3.1-fast-generate-001` (video) & `lyria-3-pro-preview` (score) on Google Cloud Vertex AI (project `atlas-495807`)
+- **Scored Presentation Master:** `evidence_media/Track3_CineIntel/final/astra_yuddha_celestial_scored_final.mp4`
+- **Scored Master SHA-256:** `75072b8a8dbce6d084644dd97646713fb2be7498b1d900595677ec9b7f8073f0`
+- **Video Bitstream SHA-256:** `93367e85b270836579d0c0149895f593ae46256a09e3884104a5e23feba73f28` (100% verified stream-copy match)
+- **Foley-Only Reference Master:** `evidence_media/Track3_CineIntel/final/astra_yuddha_celestial_trailer.mp4` (`c97dff90b83c3b868f01684a179fd5a8027d965789e5329a6e3c711465e6f2c7`)
 - **Public Asset URL:** `__PENDING_PUBLIC_ASSET_URL__`
 
 ---
