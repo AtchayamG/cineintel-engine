@@ -63,7 +63,7 @@ python -m pytest -v
 **Live judge demo:** https://cineintel-engine.vercel.app/  
 **Public source:** https://github.com/AtchayamG/cineintel-engine
 
-A `vercel.json` configuration is included for reproducible public deployment of the FastAPI backend. Public deployments default to `demo` mode using honest deterministic fixtures.
+The stable Vercel judge URL proxies the latest Cloud Run backend. Public health reports `runtime_mode: hybrid`: Gemini 3.7 Flash is live through Vertex AI ADC, while Parallel Search remains explicitly labeled demo until a production API credential is connected. Separate authenticated Parallel Search evidence is documented in the repository.
 
 When deploying to Vercel, ensure you set the **Root Directory** in your Vercel project settings to `backend`.
 

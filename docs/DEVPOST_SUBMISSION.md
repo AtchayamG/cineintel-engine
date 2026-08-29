@@ -4,7 +4,7 @@
 **CineIntel Engine: Real-Time Web Grounding, Film Trend Research & Autonomous Script Doctor**
 
 ## Elevator Pitch
-An autonomous film intelligence and research engine that uses official Parallel Search and Gemini to generate source-aware screenplays with explicit uncertainty critiques. The public evaluator uses deterministic fixtures; separate evidence proves authenticated Parallel Search (`docs/PARALLEL_LIVE_PROOF.md`) and authenticated Gemini 3.7 Flash runtime smoke on Vertex AI (`docs/evidence/GEMINI_37_VERTEX_RUNTIME_SMOKE.md`).
+An autonomous film intelligence and research engine that uses Parallel Search and Gemini to generate source-aware screenplays with explicit uncertainty critiques. The public evaluator now runs Gemini 3.7 Flash live through Vertex AI; its Parallel provider remains transparently labeled demo/unconfigured, with separate authenticated Parallel Search evidence in `docs/PARALLEL_LIVE_PROOF.md`.
 
 ## Selected Track
 **Parallel Track** ($7,500 1st Place)
@@ -13,7 +13,7 @@ An autonomous film intelligence and research engine that uses official Parallel 
 - **Live Application:** https://cineintel-engine.vercel.app/
 - **Public Repository:** https://github.com/AtchayamG/cineintel-engine
 - **Demo Video:** https://youtu.be/Pc5cY7IAVMA
-- **Runtime Note:** The hosted evaluator is explicitly labeled demo mode for repeatability. `docs/PARALLEL_LIVE_PROOF.md` records a successful authenticated Parallel Search call without storing the credential.
+- **Runtime Note:** The public evaluator runs Gemini 3.7 Flash live through Vertex AI. Its Parallel provider remains explicitly labeled demo/unconfigured. `docs/PARALLEL_LIVE_PROOF.md` records a successful authenticated Parallel Search call without storing the credential.
 
 ## What It Does
 1. **Live-Mode Open-Web Market Research**: Uses Parallel Search (`parallel-web`) to extract trending tropes, cinematographic benchmarks, and narrative patterns.
