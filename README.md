@@ -16,7 +16,7 @@
 ## 🌟 Overview
 **CineIntel Engine** is an autonomous film intelligence and research platform featuring implemented live integrations of the official **Parallel Search API / SDK (`parallel-web`)** and **Google Gemini 3.7 Flash**. By default, the public app provides deterministic Parallel-shaped research fixtures alongside a local Gemini-shaped synthesis fixture. 
 
-When configured in live mode, autonomous agents query open-web sources and preserve titles, URLs, excerpts, and retrieval status to ground screenplay development in verifiable evidence and explicit uncertainty bounds. Independent authenticated checks prove the official Parallel Search endpoint and the historical Gemini 2.5 SDK path. The current implementation targets Gemini 3.7 Flash; no authenticated 3.7 or end-to-end Parallel-plus-Gemini call is claimed. The public evaluator remains deterministic demo mode for repeatability.
+The public evaluator runs in live mode: autonomous agents query Parallel Search and preserve titles, URLs, excerpts, and retrieval status while Gemini 3.7 Flash runs through Vertex AI. Public end-to-end verification returned live web sources through the stable judge URL.
 
 ---
 
@@ -63,7 +63,7 @@ python -m pytest -v
 **Live judge demo:** https://cineintel-engine.vercel.app/  
 **Public source:** https://github.com/AtchayamG/cineintel-engine
 
-The stable Vercel judge URL proxies the latest Cloud Run backend. Public health reports `runtime_mode: hybrid`: Gemini 3.7 Flash is live through Vertex AI ADC, while Parallel Search remains explicitly labeled demo until a production API credential is connected. Separate authenticated Parallel Search evidence is documented in the repository.
+The stable Vercel judge URL proxies Cloud Run revision `cineintel-engine-live-00003-6gt`. Public health reports `runtime_mode: live`; a public trend-analysis call returned URL-bearing sources with `retrieval_status: RETRIEVED_LIVE_WEB` and `parallel_mode: live`. See `docs/evidence/PUBLIC_RUNTIME_VERIFICATION_2026-08-30.md`.
 
 When deploying to Vercel, ensure you set the **Root Directory** in your Vercel project settings to `backend`.
 
