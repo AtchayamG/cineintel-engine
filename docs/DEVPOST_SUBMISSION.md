@@ -13,6 +13,7 @@ An autonomous film intelligence and research engine that uses live Parallel Sear
 - **Live Application:** https://cineintel-engine.vercel.app/
 - **Public Repository:** https://github.com/AtchayamG/cineintel-engine
 - **Demo Video:** https://youtu.be/Pc5cY7IAVMA
+- **Supplemental Cinematic Evidence:** https://youtu.be/9eLQ5VUnhgs — fixed, pre-generated Veo + Lyria reel; Parallel live search evidence is demonstrated separately in the application and primary demo.
 - **Runtime Note:** The public evaluator runs Gemini 3.7 Flash through Vertex AI and Parallel Search through an isolated application credential stored in Google Secret Manager. Public end-to-end proof is recorded in `docs/evidence/PUBLIC_RUNTIME_VERIFICATION_2026-08-30.md`.
 
 ## What It Does

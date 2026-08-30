@@ -11,7 +11,7 @@
 - **Scored Master SHA-256:** `75072b8a8dbce6d084644dd97646713fb2be7498b1d900595677ec9b7f8073f0`
 - **Video Bitstream SHA-256:** `93367e85b270836579d0c0149895f593ae46256a09e3884104a5e23feba73f28` (100% verified stream-copy match)
 - **Foley-Only Reference Master:** `evidence_media/Track3_CineIntel/final/astra_yuddha_celestial_trailer.mp4` (`c97dff90b83c3b868f01684a179fd5a8027d965789e5329a6e3c711465e6f2c7`)
-- **Public Asset URL:** `__PENDING_PUBLIC_ASSET_URL__`
+- **Public Asset URL:** `https://youtu.be/9eLQ5VUnhgs`
 
 ---
 
